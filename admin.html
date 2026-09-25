@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin — Dr. Ayurveda</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f0f2f5; color: #333; }
+
+        /* ===== MODERN LOGIN ===== */
+        .login-screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0f1f0a 0%, #1a3d15 50%, #2D5A27 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .login-screen::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(197,165,90,0.1) 0%, transparent 70%);
+            top: -200px;
+            right: -200px;
+            animation: float 6s ease-in-out infinite;
+        }
+        .login-screen::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(197,165,90,0.08) 0%, transparent 70%);
+            bottom: -100px;
+            left: -100px;
+            animation: float 8s ease-in-out infinite reverse;
+        }
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(20px, -20px); }
+        }
+
+        .login-card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 24px;
+            padding: 48px 40px;
+            width: 380px;
+            max-width: 90vw;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+        }
+        .login-card .logo-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #C5A55A, #f0d78c);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 20px;
+            box-shadow: 0 10px 30px rgba(197,165,90,0.3);
+        }
+        .login-card h2 {
+            color: #fff;
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+        .login-card .sub {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.8rem;
+            margin-bottom: 30px;
+        }
+        .login-card .input-wrap {
+            position: relative;
+            margin-bottom: 16px;
+        }
+        .login-card .input-wrap input {
+            width: 100%;
+            padding: 14px 16px 14px 44px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 0.9rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+        .login-card .input-wrap input::placeholder { color: rgba(255,255,255,0.4); }
+        .login-card .input-wrap input:focus {
+            border-color: #C5A55A;
+            background: rgba(255,255,255,0.12);
+            box-shadow: 0 0 0 3px rgba(197,165,90,0.15);
+        }
+        .login-card .input-wrap .icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.1rem;
+            opacity: 0.6;
+        }
+        .login-card .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #C5A55A, #f0d78c);
+            color: #1a2e15;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: all 0.3s;
+            box-shadow: 0 8px 25px rgba(197,165,90,0.3);
+        }
+        .login-card .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(197,165,90,0.4);
+        }
+        .login-card .login-btn:active { transform: translateY(0); }
+        .login-card .error-msg {
+            color: #ff6b6b;
+            font-size: 0.8rem;
+            margin-top: 12px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .login-card .error-msg.show { opacity: 1; }
+        .login-card .hint {
+            color: rgba(255,255,255,0.3);
+            font-size: 0.7rem;
+            margin-top: 20px;
+        }
+
+        /* ===== ADMIN SCREEN ===== */
+        .admin-screen { display: none; }
+        .admin-header {
+            background: linear-gradient(135deg, #0f1f0a, #1a3d15);
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        .admin-header h1 { color: #fff; font-size: 1.1rem; font-weight: 800; }
+        .admin-header h1 span { color: #C5A55A; }
+        .admin-header .logout-btn {
+            background: rgba(255,255,255,0.08);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.15);
+            padding: 8px 18px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .admin-header .logout-btn:hover { background: rgba(255,255,255,0.15); }
+
+        /* STATS */
+        .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; padding: 20px 24px; }
+        .stat-box {
+            background: #fff;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            transition: transform 0.2s;
+        }
+        .stat-box:hover { transform: translateY(-3px); }
+        .stat-box .sv { font-size: 1.6rem; font-weight: 900; color: #2D5A27; }
+        .stat-box .sl { font-size: 0.75rem; color: #666; margin-top: 4px; font-weight: 500; }
+        .stat-box .si { font-size: 1.6rem; margin-bottom: 8px; }
+
+        .admin-content { padding: 0 24px 100px; }
+
+        /* ADD ORDER */
+        .add-order-box {
+            background: #fff;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+        }
+        .add-order-box h3 { font-size: 1rem; color: #2D5A27; margin-bottom: 16px; font-weight: 800; }
+        .form-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        .form-grid input, .form-grid select, .form-grid textarea {
+            padding: 11px 14px;
+            border: 1.5px solid #eee;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            outline: none;
+            transition: border 0.2s;
+            font-family: inherit;
+        }
+        .form-grid input:focus, .form-grid select:focus, .form-grid textarea:focus { border-color: #2D5A27; }
+        .form-grid .full { grid-column: 1 / -1; }
+        .add-btn {
+            margin-top: 14px;
+            padding: 12px 28px;
+            background: linear-gradient(135deg, #2D5A27, #1a3d15);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .add-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(45,90,39,0.3); }
+
+        /* FILTERS */
+        .filter-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+        .filter-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1.5px solid #ddd;
+            background: #fff;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-btn:hover { border-color: #C5A55A; color: #C5A55A; }
+        .filter-btn.active { background: #2D5A27; color: #fff; border-color: #2D5A27; }
+
+        /* ORDER CARDS */
+        .orders-list { display: flex; flex-direction: column; gap: 14px; }
+        .order-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            transition: transform 0.2s;
+        }
+        .order-card:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.08); }
+        .order-card .oc-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .order-card .oc-id { font-size: 0.8rem; color: #666; font-weight: 700; }
+        .order-card .oc-date { font-size: 0.7rem; color: #999; }
+        .status-badge {
+            padding: 5px 14px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .st-ordered { background: #fff3e0; color: #e65100; }
+        .st-shipped { background: #e3f2fd; color: #1565c0; }
+        .st-delivered { background: #e8f5e9; color: #2e7d32; }
+        .st-cancelled { background: #ffebee; color: #c62828; }
+        .st-exchange { background: #f3e5f5; color: #6a1b9a; }
+        .st-return { background: #fce4ec; color: #ad1457; }
+
+        /* CUSTOMER DETAILS BOX */
+        .cust-details {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 14px;
+            border-left: 4px solid #C5A55A;
+        }
+        .cust-details .cd-title {
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: #C5A55A;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        .cust-details .cd-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+        .cust-details .cd-item {
+            font-size: 0.8rem;
+            color: #333;
+        }
+        .cust-details .cd-item .label {
+            font-size: 0.65rem;
+            color: #999;
+            text-transform: uppercase;
+            font-weight: 700;
+            display: block;
+        }
+        .cust-details .cd-item .value {
+            font-weight: 600;
+            margin-top: 2px;
+        }
+        .cust-details .cd-item.full { grid-column: 1 / -1; }
+
+        /* ORDER ITEMS */
+        .oc-items {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
+        .oc-item {
+            background: #f0f7f0;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #2D5A27;
+        }
+
+        .oc-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .oc-total { font-size: 1.1rem; font-weight: 900; color: #2D5A27; }
+        .oc-payment { font-size: 0.75rem; color: #666; font-weight: 600; }
+        .oc-actions { display: flex; gap: 8px; align-items: center; }
+        .status-select {
+            padding: 6px 10px;
+            border-radius: 8px;
+            border: 1.5px solid #ddd;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            outline: none;
+        }
+        .status-select:focus { border-color: #2D5A27; }
+        .delete-btn {
+            background: #fff0f0;
+            border: 1px solid #ffcccc;
+            color: #ff4444;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .delete-btn:hover { background: #ff4444; color: #fff; }
+
+        /* PAYMENT SUMMARY */
+        .pay-summary { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 24px; }
+        .pay-box {
+            background: #fff;
+            border-radius: 14px;
+            padding: 18px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+        }
+        .pay-box .pi { font-size: 1.5rem; margin-bottom: 6px; }
+        .pay-box .pn { font-size: 0.7rem; color: #666; font-weight: 600; }
+        .pay-box .pa { font-size: 1rem; font-weight: 900; color: #2D5A27; margin-top: 4px; }
+
+        /* PRODUCT STATS */
+        .product-stats {
+            background: #fff;
+            border-radius: 16px;
+            padding: 24px;
+            margin-top: 24px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+        }
+        .product-stats h3 { font-size: 1rem; color: #2D5A27; margin-bottom: 16px; font-weight: 800; }
+        .prod-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+        .prod-row:last-child { border: none; }
+        .prod-row .pn { font-size: 0.85rem; font-weight: 700; }
+        .prod-row .ps { font-size: 0.75rem; color: #999; margin-top: 2px; }
+        .prod-row .pr { font-size: 1rem; font-weight: 900; color: #2D5A27; }
+
+        /* TOAST */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #1a2e15;
+            color: #fff;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            z-index: 999;
+            transition: all 0.3s;
+            opacity: 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .stats-row { grid-template-columns: repeat(2, 1fr); padding: 12px; }
+            .form-grid { grid-template-columns: repeat(2, 1fr); }
+            .pay-summary { grid-template-columns: repeat(3, 1fr); }
+            .admin-content { padding: 0 12px 100px; }
+            .cust-details .cd-grid { grid-template-columns: 1fr; }
+            .oc-top { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== MODERN LOGIN ===== -->
+<div class="login-screen" id="loginScreen">
+    <div class="login-card">
+        <div class="logo-icon">🌿</div>
+        <h2>Admin Panel</h2>
+        <p class="sub">Dr. Ayurveda Shop — Restricted Access</p>
+        <div class="input-wrap">
+            <span class="icon">🔒</span>
+            <input type="password" id="passInput" placeholder="Enter password" onkeydown="if(event.key==='Enter')login()">
+        </div>
+        <button class="login-btn" onclick="login()">Login →</button>
+        <div class="error-msg" id="loginError">❌ Incorrect password. Try again.</div>
+        <p class="hint">Default: ayurveda123</p>
+    </div>
+</div>
+
+<!-- ===== ADMIN ===== -->
+<div class="admin-screen" id="adminScreen">
+    <div class="admin-header">
+        <h1>🌿 Dr. Ayurveda <span>Admin</span></h1>
+        <button class="logout-btn" onclick="logout()">← Logout</button>
+    </div>
+
+    <div class="stats-row">
+        <div class="stat-box"><div class="si">📦</div><div class="sv" id="stTotal">0</div><div class="sl">Total Orders</div></div>
+        <div class="stat-box"><div class="si">💰</div><div class="sv" id="stRevenue">₹0</div><div class="sl">Revenue</div></div>
+        <div class="stat-box"><div class="si">🚚</div><div class="sv" id="stShipped">0</div><div class="sl">Shipped</div></div>
+        <div class="stat-box"><div class="si">✅</div><div class="sv" id="stDelivered">0</div><div class="sl">Delivered</div></div>
+    </div>
+
+    <div class="admin-content">
+        <!-- ADD ORDER -->
+        <div class="add-order-box">
+            <h3>➕ Naya Order Add Karo</h3>
+            <div class="form-grid">
+                <input type="text" id="fName" placeholder="Customer Naam *">
+                <input type="tel" id="fPhone" placeholder="Phone *">
+                <input type="email" id="fEmail" placeholder="Email">
+                <input type="text" id="fCity" placeholder="City *">
+                <textarea id="fAddress" placeholder="Full Address *" rows="1" class="full"></textarea>
+                <input type="text" id="fProduct" placeholder="Product Name *">
+                <input type="number" id="fQty" placeholder="Qty" min="1" value="1">
+                <input type="number" id="fPrice" placeholder="Price (₹) *">
+                <select id="fPayment">
+                    <option value="UPI">UPI</option>
+                    <option value="PhonePe">PhonePe</option>
+                    <option value="GPay">GPay</option>
+                    <option value="Paytm">Paytm</option>
+                    <option value="COD">COD</option>
+                </select>
+                <select id="fStatus">
+                    <option value="ordered">Ordered</option>
+                    <option value="shipped">Shipped</option>
+                    <option value="delivered">Delivered</option>
+                    <option value="cancelled">Cancelled</option>
+                    <option value="exchange">Exchange</option>
+                    <option value="return">Return</option>
+                </select>
+            </div>
+            <button class="add-btn" onclick="addOrder()">➕ Add Order</button>
+        </div>
+
+        <!-- FILTERS -->
+        <div class="filter-row">
+            <button class="filter-btn active" onclick="filterOrders('all',this)">All</button>
+            <button class="filter-btn" onclick="filterOrders('ordered',this)">🟠 Ordered</button>
+            <button class="filter-btn" onclick="filterOrders('shipped',this)">🔵 Shipped</button>
+            <button class="filter-btn" onclick="filterOrders('delivered',this)">🟢 Delivered</button>
+            <button class="filter-btn" onclick="filterOrders('cancelled',this)">🔴 Cancelled</button>
+            <button class="filter-btn" onclick="filterOrders('exchange',this)">🟣 Exchange</button>
+            <button class="filter-btn" onclick="filterOrders('return',this)">🩷 Return</button>
+        </div>
+
+        <!-- ORDERS LIST -->
+        <div class="orders-list" id="ordersList"></div>
+
+        <!-- PAYMENT SUMMARY -->
+        <div class="pay-summary" id="paySummary"></div>
+
+        <!-- PRODUCT WISE -->
+        <div class="product-stats">
+            <h3>📊 Product-wise Sales</h3>
+            <div id="productStats"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+const ADMIN_PASSWORD = 'ayurveda123';
+let orders = JSON.parse(localStorage.getItem('ayurveda_orders')) || [];
+let currentFilter = 'all';
+
+function login() {
+    const pass = document.getElementById('passInput').value;
+    if (pass === ADMIN_PASSWORD) {
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('adminScreen').style.display = 'block';
+        renderAll();
+    } else {
+        const err = document.getElementById('loginError');
+        err.classList.add('show');
+        setTimeout(() => err.classList.remove('show'), 3000);
+    }
+}
+
+function logout() {
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('adminScreen').style.display = 'none';
+    document.getElementById('passInput').value = '';
+}
+
+function addOrder() {
+    const name = document.getElementById('fName').value.trim();
+    const phone = document.getElementById('fPhone').value.trim();
+    const email = document.getElementById('fEmail').value.trim();
+    const city = document.getElementById('fCity').value.trim();
+    const address = document.getElementById('fAddress').value.trim();
+    const product = document.getElementById('fProduct').value.trim();
+    const qty = parseInt(document.getElementById('fQty').value) || 1;
+    const price = parseInt(document.getElementById('fPrice').value) || 0;
+    const payment = document.getElementById('fPayment').value;
+    const status = document.getElementById('fStatus').value;
+
+    if (!name || !phone || !address || !product || !price) {
+        showToast('⚠️ Naam, Phone, Address, Product, Price zaroori!');
+        return;
+    }
+
+    const order = {
+        id: 'AYU-' + String(Date.now()).slice(-5),
+        date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
+        name, phone, email, address, city,
+        items: [`${product} × ${qty}`],
+        total: price * qty,
+        payment, status
+    };
+
+    orders.unshift(order);
+    save();
+    renderAll();
+
+    ['fName','fPhone','fEmail','fCity','fAddress','fProduct','fPrice'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('fQty').value = '1';
+    showToast('✅ Order Added!');
+}
+
+function updateStatus(id, newStatus) {
+    const order = orders.find(o => o.id === id);
+    if (order) {
+        order.status = newStatus;
+        save();
+        renderAll();
+        showToast('✅ Status → ' + newStatus);
+    }
+}
+
+function deleteOrder(id) {
+    if (confirm('Delete yeh order?')) {
+        orders = orders.filter(o => o.id !== id);
+        save();
+        renderAll();
+        showToast('🗑️ Deleted');
+    }
+}
+
+function filterOrders(status, btn) {
+    currentFilter = status;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderOrders();
+}
+
+function renderAll() {
+    renderStats();
+    renderOrders();
+    renderPaymentSummary();
+    renderProductStats();
+}
+
+function renderStats() {
+    const active = orders.filter(o => o.status !== 'cancelled');
+    document.getElementById('stTotal').textContent = orders.length;
+    document.getElementById('stRevenue').textContent = '₹' + active.reduce((s, o) => s + o.total, 0).toLocaleString('en-IN');
+    document.getElementById('stShipped').textContent = orders.filter(o => o.status === 'shipped').length;
+    document.getElementById('stDelivered').textContent = orders.filter(o => o.status === 'delivered').length;
+}
+
+function renderOrders() {
+    const list = document.getElementById('ordersList');
+    const filtered = currentFilter === 'all' ? orders : orders.filter(o => o.status === currentFilter);
+
+    if (filtered.length === 0) {
+        list.innerHTML = '<div style="text-align:center;padding:40px;color:#999;font-size:0.9rem;">📭 Koi order nahi hai</div>';
+        return;
+    }
+
+    list.innerHTML = filtered.map(o => `
+        <div class="order-card">
+            <div class="oc-top">
+                <div>
+                    <span class="oc-id">${o.id}</span>
+                    <span class="oc-date" style="margin-left:10px;">${o.date}</span>
+                </div>
+                <span class="status-badge st-${o.status}">${o.status}</span>
+            </div>
+
+            <!-- CUSTOMER DETAILS -->
+            <div class="cust-details">
+                <div class="cd-title">👤 Customer Details</div>
+                <div class="cd-grid">
+                    <div class="cd-item"><span class="label">Name</span><span class="value">${o.name}</span></div>
+                    <div class="cd-item"><span class="label">Phone</span><span class="value">${o.phone}</span></div>
+                    <div class="cd-item"><span class="label">Email</span><span class="value">${o.email || 'N/A'}</span></div>
+                    <div class="cd-item"><span class="label">City</span><span class="value">${o.city || '-'}</span></div>
+                    <div class="cd-item full"><span class="label">Address</span><span class="value">${o.address || '-'}</span></div>
+                </div>
+            </div>
+
+            <!-- ITEMS -->
+            <div class="oc-items">
+                ${(o.items || []).map(i => `<span class="oc-item">${i}</span>`).join('')}
+            </div>
+
+            <div class="oc-bottom">
+                <div>
+                    <span class="oc-total">₹${o.total.toLocaleString('en-IN')}</span>
+                    <span class="oc-payment" style="margin-left:10px;">💳 ${o.payment}</span>
+                </div>
+                <div class="oc-actions">
+                    <select class="status-select" onchange="updateStatus('${o.id}', this.value)">
+                        ${['ordered','shipped','delivered','cancelled','exchange','return'].map(s =>
+                            `<option value="${s}" ${o.status===s?'selected':''}>${s.charAt(0).toUpperCase()+s.slice(1)}</option>`
+                        ).join('')}
+                    </select>
+                    <button class="delete-btn" onclick="deleteOrder('${o.id}')">🗑️</button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function renderPaymentSummary() {
+    const methods = { 'UPI': 0, 'PhonePe': 0, 'GPay': 0, 'Paytm': 0, 'COD': 0 };
+    orders.filter(o => o.status !== 'cancelled').forEach(o => {
+        if (methods[o.payment] !== undefined) methods[o.payment] += o.total;
+    });
+    const icons = { 'UPI': '📱', 'PhonePe': '📲', 'GPay': '🅶', 'Paytm': '💜', 'COD': '💵' };
+    document.getElementById('paySummary').innerHTML = Object.entries(methods).map(([name, amt]) => `
+        <div class="pay-box">
+            <div class="pi">${icons[name]}</div>
+            <div class="pn">${name}</div>
+            <div class="pa">₹${amt.toLocaleString('en-IN')}</div>
+        </div>
+    `).join('');
+}
+
+function renderProductStats() {
+    const prodMap = {};
+    orders.filter(o => o.status !== 'cancelled').forEach(o => {
+        (o.items || []).forEach(itemStr => {
+            const name = itemStr.split(' ×')[0];
+            if (!prodMap[name]) prodMap[name] = { qty: 0, revenue: 0 };
+            const qtyMatch = itemStr.match(/× (\d+)/);
+            prodMap[name].qty += qtyMatch ? parseInt(qtyMatch[1]) : 1;
+            prodMap[name].revenue += o.total;
+        });
+    });
+    const sorted = Object.entries(prodMap).sort((a, b) => b[1].revenue - a[1].revenue);
+    document.getElementById('productStats').innerHTML = sorted.length === 0
+        ? '<p style="color:#999;font-size:0.85rem;">Abhi koi order nahi</p>'
+        : sorted.map(([name, data]) => `
+            <div class="prod-row">
+                <div><div class="pn">${name}</div><div class="ps">${data.qty} sold</div></div>
+                <div class="pr">₹${data.revenue.toLocaleString('en-IN')}</div>
+            </div>
+        `).join('');
+}
+
+function save() {
+    localStorage.setItem('ayurveda_orders', JSON.stringify(orders));
+}
+
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+}
+</script>
+
+</body>
+</html>   

@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Ayurveda — Authentic Ayurvedic Products</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #FFF8E7; color: #2D5A27; }
+        h1, h2, h3 { font-family: 'Playfair Display', serif; }
+
+        /* ===== TOP BAR (Search) ===== */
+        .top-bar { background: #1a2e15; padding: 10px 20px; display: flex; align-items: center; gap: 14px; }
+        .top-bar .logo { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: #fff; white-space: nowrap; }
+        .top-bar .logo span { color: #C5A55A; }
+        .search-box { flex: 1; display: flex; align-items: center; background: #fff; border-radius: 25px; padding: 7px 14px; gap: 6px; max-width: 550px; }
+        .search-box input { flex: 1; border: none; outline: none; font-size: 0.85rem; color: #333; }
+        .search-box .icon-btn { background: none; border: none; font-size: 1.1rem; cursor: pointer; padding: 3px; }
+
+        /* ===== NAV ===== */
+        nav { background: #fff; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 200; }
+        .nav-left { display: flex; gap: 4px; overflow-x: auto; }
+        .nav-right { display: flex; gap: 4px; align-items: center; }
+        .nav-link { padding: 14px 16px; font-size: 0.85rem; font-weight: 600; color: #666; cursor: pointer; text-decoration: none; border-bottom: 3px solid transparent; white-space: nowrap; transition: all 0.2s; }
+        .nav-link:hover { color: #2D5A27; }
+        .nav-link.active { color: #2D5A27; border-bottom-color: #C5A55A; }
+        .nav-divider { width: 1px; height: 24px; background: #eee; margin: 0 8px; }
+        .cart-btn { background: #2D5A27; color: #fff; border: none; padding: 8px 18px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; position: relative; font-weight: 600; }
+        .cart-btn .cart-count { background: #ff4444; color: #fff; width: 18px; height: 18px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 800; margin-left: 4px; }
+
+        /* ===== PAGES ===== */
+        .page { display: none; }
+        .page.active { display: block; }
+
+        /* ===== SALE BANNER ===== */
+        .sale-banner { background: linear-gradient(135deg, #1a3d15 0%, #2D5A27 40%, #1a3d15 100%); padding: 40px 40px 30px; text-align: center; position: relative; overflow: hidden; }
+        .sale-banner::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(197,165,90,0.08) 0%, transparent 60%); animation: pulse 4s ease-in-out infinite; }
+        @keyframes pulse { 0%,100%{transform:scale(1);opacity:.5} 50%{transform:scale(1.1);opacity:1} }
+        .sale-badge { display: inline-block; background: #C5A55A; color: #1a2e15; padding: 5px 18px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; position: relative; }
+        .sale-banner h1 { font-size: 2.5rem; font-weight: 800; color: #fff; margin-bottom: 8px; position: relative; }
+        .sale-banner h1 span { background: linear-gradient(90deg,#C5A55A,#f0d78c,#C5A55A); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .sale-banner .sub { color: #a8c0a0; font-size: 1rem; margin-bottom: 24px; position: relative; }
+        .countdown { display: flex; justify-content: center; gap: 12px; margin-bottom: 20px; position: relative; }
+        .countdown .time-box { background: rgba(255,255,255,0.08); border: 1px solid rgba(197,165,90,0.3); border-radius: 10px; padding: 12px 16px; min-width: 70px; text-align: center; }
+        .countdown .time-box .num { font-size: 1.8rem; font-weight: 800; color: #C5A55A; line-height: 1; }
+        .countdown .time-box .label { font-size: 0.65rem; color: #a8c0a0; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+        .countdown .separator { font-size: 1.5rem; color: #C5A55A; align-self: center; font-weight: 700; }
+        .coupon-bar { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; position: relative; }
+        .coupon { background: rgba(197,165,90,0.1); border: 2px dashed #C5A55A; border-radius: 10px; padding: 8px 18px; display: flex; align-items: center; gap: 8px; cursor: pointer; transition: all 0.2s; }
+        .coupon:hover { background: rgba(197,165,90,0.2); transform: scale(1.05); }
+        .coupon .code { font-weight: 800; color: #C5A55A; font-size: 0.85rem; letter-spacing: 1px; }
+        .coupon .desc { font-size: 0.7rem; color: #a8c0a0; }
+
+        /* ===== HERO ===== */
+        .hero { padding: 50px 40px; display: flex; align-items: center; gap: 50px; max-width: 1200px; margin: 0 auto; }
+        .hero-text { flex: 1; }
+        .hero-text .badge { display: inline-block; background: #C5A55A; color: #fff; padding: 4px 14px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-bottom: 14px; }
+        .hero-text h2 { font-size: 2.2rem; line-height: 1.2; margin-bottom: 14px; color: #2D5A27; }
+        .hero-text h2 span { color: #C5A55A; }
+        .hero-text p { font-size: 1rem; color: #4A3728; line-height: 1.7; margin-bottom: 24px; }
+        .hero-btns { display: flex; gap: 14px; }
+        .btn-primary { background: #2D5A27; color: #fff; padding: 12px 28px; border-radius: 25px; text-decoration: none; font-weight: 600; font-size: 0.9rem; display: inline-block; cursor: pointer; }
+        .btn-outline { border: 2px solid #C5A55A; color: #C5A55A; padding: 12px 28px; border-radius: 25px; text-decoration: none; font-weight: 600; font-size: 0.9rem; display: inline-block; cursor: pointer; }
+        .hero-img { flex: 1; display: flex; justify-content: center; }
+        .doc-card { background: #fff; border-radius: 20px; padding: 28px; text-align: center; box-shadow: 0 10px 40px rgba(45,90,39,0.1); max-width: 300px; }
+        .doc-card .avatar { width: 110px; height: 110px; border-radius: 50%; background: linear-gradient(135deg,#2D5A27,#C5A55A); margin: 0 auto 14px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: #fff; }
+        .doc-card h3 { font-size: 1.1rem; margin-bottom: 6px; }
+        .doc-card .qual { color: #C5A55A; font-weight: 600; font-size: 0.85rem; }
+        .doc-card p { font-size: 0.8rem; color: #666; margin-top: 10px; }
+
+        /* ===== CATEGORIES ===== */
+        .section { padding: 40px; max-width: 1200px; margin: 0 auto; }
+        .section-title { text-align: center; font-size: 1.6rem; margin-bottom: 8px; color: #2D5A27; }
+        .section-sub { text-align: center; color: #4A3728; margin-bottom: 28px; font-size: 0.9rem; }
+        .categories { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
+        .cat-card { background: #fff; border-radius: 14px; padding: 20px 10px; text-align: center; cursor: pointer; transition: all 0.2s; border: 2px solid transparent; }
+        .cat-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(45,90,39,0.1); border-color: #C5A55A; }
+        .cat-card .icon { font-size: 1.8rem; margin-bottom: 8px; }
+        .cat-card h4 { font-size: 0.8rem; font-weight: 600; color: #2D5A27; }
+
+        /* ===== FLASH DEALS ===== */
+        .flash-section { padding: 40px; max-width: 1200px; margin: 0 auto; }
+        .flash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .flash-header h2 { font-size: 1.6rem; color: #2D5A27; }
+        .flash-header h2 span { color: #C5A55A; }
+        .flash-header .timer { background: #ff4444; color: #fff; padding: 6px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; }
+        .flash-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+        .deal-card { background: #fff; border-radius: 14px; overflow: hidden; position: relative; transition: transform 0.2s; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+        .deal-card:hover { transform: translateY(-4px); }
+        .deal-card .off-badge { position: absolute; top: 10px; left: 10px; background: #ff4444; color: #fff; padding: 3px 10px; border-radius: 5px; font-size: 0.7rem; font-weight: 800; z-index: 2; }
+        .deal-card .hot-badge { position: absolute; top: 10px; right: 10px; background: #ff8c00; color: #fff; padding: 3px 8px; border-radius: 5px; font-size: 0.65rem; font-weight: 700; z-index: 2; }
+        .deal-card .img { height: 160px; background: linear-gradient(135deg,#f5f0e6,#FFF8E7); display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+        .deal-card .info { padding: 14px; color: #2D5A27; }
+        .deal-card .name { font-size: 0.9rem; font-weight: 600; margin-bottom: 4px; }
+        .deal-card .stars { color: #C5A55A; font-size: 0.75rem; margin-bottom: 6px; }
+        .deal-card .price-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+        .deal-card .sale-price { font-size: 1.2rem; font-weight: 800; color: #ff4444; }
+        .deal-card .old-price { font-size: 0.85rem; color: #999; text-decoration: line-through; }
+        .deal-card .save-tag { background: #fff0f0; color: #ff4444; font-size: 0.65rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; }
+        .stock-bar { background: #f0f0f0; border-radius: 10px; height: 6px; overflow: hidden; margin-bottom: 4px; }
+        .stock-bar .fill { height: 100%; background: linear-gradient(90deg,#ff4444,#ff8c00); border-radius: 10px; }
+        .stock-text { font-size: 0.65rem; color: #ff4444; font-weight: 600; margin-bottom: 10px; }
+        .deal-card .buy-btn { width: 100%; background: #2D5A27; color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: 700; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; }
+        .deal-card .buy-btn:hover { background: #1a3d15; }
+        .deal-card .buy-btn.added { background: #C5A55A; }
+
+        /* ===== SORT BAR ===== */
+        .sort-bar { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px 10px; max-width: 1200px; margin: 0 auto; flex-wrap: wrap; gap: 10px; }
+        .sort-bar .sort-title { font-size: 1.2rem; font-weight: 700; color: #2D5A27; }
+        .sort-bar .sort-options { display: flex; gap: 6px; flex-wrap: wrap; }
+        .sort-btn { padding: 7px 14px; border-radius: 20px; border: 1.5px solid #ddd; background: #fff; font-size: 0.75rem; font-weight: 600; color: #666; cursor: pointer; transition: all 0.2s; }
+        .sort-btn:hover { border-color: #C5A55A; color: #C5A55A; }
+        .sort-btn.active { background: #2D5A27; color: #fff; border-color: #2D5A27; }
+
+        /* ===== PRODUCTS ===== */
+        .products-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; padding: 10px 40px 40px; max-width: 1200px; margin: 0 auto; }
+        .product-card { background: #fff; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.04); transition: transform 0.2s; position: relative; }
+        .product-card:hover { transform: translateY(-4px); }
+        .product-card .img { height: 170px; background: linear-gradient(135deg,#f0e6d3,#FFF8E7); display: flex; align-items: center; justify-content: center; font-size: 3rem; position: relative; }
+        .product-card .off-badge { position: absolute; top: 10px; left: 10px; background: #ff4444; color: #fff; padding: 3px 10px; border-radius: 5px; font-size: 0.7rem; font-weight: 800; }
+        .product-card .oos-badge { position: absolute; top: 10px; right: 10px; background: #999; color: #fff; padding: 3px 10px; border-radius: 5px; font-size: 0.65rem; font-weight: 700; }
+        .product-card .info { padding: 14px; }
+        .product-card .tag { display: inline-block; background: #f0f7f0; color: #2D5A27; font-size: 0.65rem; padding: 2px 8px; border-radius: 8px; font-weight: 600; margin-bottom: 5px; }
+        .product-card h4 { font-size: 0.9rem; margin-bottom: 4px; color: #2D5A27; }
+        .product-card .stars { color: #C5A55A; font-size: 0.75rem; margin-bottom: 5px; }
+        .product-card .stars .cnt { color: #999; font-size: 0.65rem; }
+        .product-card .desc { font-size: 0.75rem; color: #666; margin-bottom: 8px; line-height: 1.4; }
+        .product-card .price-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+        .product-card .price { font-weight: 700; font-size: 1.05rem; color: #2D5A27; }
+        .product-card .old-price { font-size: 0.8rem; color: #999; text-decoration: line-through; }
+        .product-card .sale-price { font-weight: 800; font-size: 1.05rem; color: #ff4444; }
+        .product-card .bottom { display: flex; justify-content: space-between; align-items: center; }
+        .product-card .add-btn { background: #2D5A27; color: #fff; border: none; width: 32px; height: 32px; border-radius: 50%; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+        .product-card .add-btn:hover { background: #C5A55A; transform: scale(1.1); }
+        .product-card .add-btn:disabled { background: #ccc; cursor: not-allowed; transform: none; }
+
+        /* ===== COMBO ===== */
+        .combo-section { background: linear-gradient(135deg,#2D5A27,#1a3d15); padding: 40px; margin: 30px 0; }
+        .combo-inner { max-width: 1200px; margin: 0 auto; }
+        .combo-inner h2 { color: #fff; font-size: 1.6rem; margin-bottom: 8px; }
+        .combo-inner > p { color: #C5A55A; margin-bottom: 24px; }
+        .combo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .combo-card { background: rgba(255,255,255,0.1); border: 1px solid rgba(197,165,90,0.3); border-radius: 14px; padding: 24px; text-align: center; }
+        .combo-card .emoji { font-size: 2.2rem; margin-bottom: 10px; }
+        .combo-card h4 { color: #fff; font-size: 1rem; margin-bottom: 6px; }
+        .combo-card .items { color: #d4c9a8; font-size: 0.75rem; margin-bottom: 12px; line-height: 1.5; }
+        .combo-card .combo-price { font-size: 1.3rem; font-weight: 700; color: #C5A55A; }
+        .combo-card .old-price { text-decoration: line-through; color: #888; font-size: 0.85rem; margin-left: 6px; }
+        .combo-card .add-combo-btn { margin-top: 12px; background: #C5A55A; color: #1a2e15; border: none; padding: 8px 20px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.8rem; transition: transform 0.2s; }
+        .combo-card .add-combo-btn:hover { transform: scale(1.05); }
+
+        /* ===== REVIEWS ===== */
+        .reviews-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .review-card { background: #fff; border-radius: 14px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+        .review-card .stars { color: #C5A55A; margin-bottom: 8px; }
+        .review-card p { font-size: 0.85rem; color: #4A3728; line-height: 1.6; margin-bottom: 12px; font-style: italic; }
+        .review-card .author { font-size: 0.75rem; font-weight: 600; color: #2D5A27; }
+
+        /* ===== WHATSAPP ===== */
+        .wa-section { background: #fff; padding: 40px; text-align: center; }
+        .wa-section h2 { font-size: 1.4rem; margin-bottom: 8px; }
+        .wa-section p { color: #666; margin-bottom: 20px; }
+        .wa-btn { display: inline-flex; align-items: center; gap: 8px; background: #25D366; color: #fff; padding: 12px 32px; border-radius: 25px; text-decoration: none; font-weight: 600; font-size: 0.95rem; }
+
+        /* ===== FOOTER ===== */
+        footer { background: #1a2e15; color: #a8c0a0; padding: 30px; text-align: center; font-size: 0.8rem; margin-bottom: 40px; }
+        footer .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: #fff; margin-bottom: 8px; }
+        footer .fssai { margin-top: 12px; font-size: 0.7rem; color: #7a9a72; }
+
+        /* ===== URGENCY BAR ===== */
+        .urgency-bar { background: #ff4444; padding: 10px 20px; text-align: center; font-weight: 700; font-size: 0.8rem; position: fixed; bottom: 0; left: 0; right: 0; z-index: 250; }
+        .urgency-bar .count { background: #fff; color: #ff4444; padding: 2px 8px; border-radius: 4px; font-weight: 800; }
+
+        /* ===== MY ORDERS ===== */
+        .orders-page { max-width: 900px; margin: 0 auto; padding: 30px 20px; }
+        .orders-page h2 { font-size: 1.5rem; color: #2D5A27; margin-bottom: 20px; }
+        .filter-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+        .filter-tab { padding: 8px 16px; border-radius: 20px; border: 1.5px solid #ddd; background: #fff; font-size: 0.8rem; font-weight: 600; color: #666; cursor: pointer; transition: all 0.2s; }
+        .filter-tab:hover { border-color: #C5A55A; color: #C5A55A; }
+        .filter-tab.active { background: #2D5A27; color: #fff; border-color: #2D5A27; }
+        .filter-tab .cnt { background: rgba(0,0,0,0.1); padding: 1px 6px; border-radius: 8px; font-size: 0.65rem; margin-left: 4px; }
+        .order-card { background: #fff; border-radius: 14px; padding: 18px; margin-bottom: 14px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); }
+        .order-card .order-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .order-card .order-id { font-size: 0.8rem; color: #666; font-weight: 600; }
+        .order-status { padding: 4px 12px; border-radius: 12px; font-size: 0.7rem; font-weight: 700; }
+        .st-ordered { background: #fff3e0; color: #e65100; }
+        .st-shipped { background: #e3f2fd; color: #1565c0; }
+        .st-delivered { background: #e8f5e9; color: #2e7d32; }
+        .st-cancelled { background: #ffebee; color: #c62828; }
+        .st-exchange { background: #f3e5f5; color: #6a1b9a; }
+        .st-return { background: #fce4ec; color: #ad1457; }
+        .order-card .order-items { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+        .order-card .oi { background: #f5f0e6; padding: 6px 10px; border-radius: 6px; font-size: 0.75rem; }
+        .order-card .order-bottom { display: flex; justify-content: space-between; align-items: center; }
+        .order-card .order-total { font-weight: 700; color: #2D5A27; }
+        .order-card .order-date { font-size: 0.7rem; color: #999; }
+
+        /* ===== DASHBOARD ===== */
+        .dashboard { max-width: 1100px; margin: 0 auto; padding: 30px 20px; }
+        .dashboard h2 { font-size: 1.5rem; color: #2D5A27; margin-bottom: 6px; }
+        .dashboard .dash-sub { color: #666; font-size: 0.9rem; margin-bottom: 24px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
+        .stat-card { background: #fff; border-radius: 14px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); text-align: center; }
+        .stat-card .si { font-size: 1.8rem; margin-bottom: 8px; }
+        .stat-card .sv { font-size: 1.6rem; font-weight: 800; color: #2D5A27; }
+        .stat-card .sl { font-size: 0.75rem; color: #666; margin-top: 4px; }
+        .stat-card .sc { font-size: 0.7rem; margin-top: 5px; font-weight: 600; }
+        .stat-card .sc.up { color: #2e7d32; }
+        .stat-card .sc.down { color: #c62828; }
+        .dash-section { background: #fff; border-radius: 14px; padding: 20px; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+        .dash-section h3 { font-size: 1rem; color: #2D5A27; margin-bottom: 14px; }
+        .dash-table { width: 100%; border-collapse: collapse; }
+        .dash-table th { text-align: left; padding: 8px; font-size: 0.7rem; color: #999; text-transform: uppercase; border-bottom: 1px solid #eee; }
+        .dash-table td { padding: 10px 8px; font-size: 0.8rem; border-bottom: 1px solid #f5f5f5; }
+        .payment-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+        .payment-card { background: #f9f9f9; border-radius: 10px; padding: 14px; text-align: center; }
+        .payment-card .pi { font-size: 1.4rem; margin-bottom: 6px; }
+        .payment-card .pn { font-size: 0.7rem; font-weight: 600; color: #333; }
+        .payment-card .pa { font-size: 0.85rem; font-weight: 800; color: #2D5A27; margin-top: 3px; }
+
+        /* ===== CART DRAWER ===== */
+        .cart-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 300; display: none; }
+        .cart-overlay.active { display: block; }
+        .cart-drawer { position: fixed; top: 0; right: -420px; width: 400px; max-width: 92vw; height: 100vh; background: #fff; z-index: 301; transition: right 0.3s ease; display: flex; flex-direction: column; box-shadow: -4px 0 20px rgba(0,0,0,0.1); }
+        .cart-drawer.active { right: 0; }
+        .cart-header { padding: 18px 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        .cart-header h3 { font-size: 1.1rem; color: #2D5A27; }
+        .cart-close { background: none; border: none; font-size: 1.4rem; cursor: pointer; color: #666; }
+        .cart-items { flex: 1; overflow-y: auto; padding: 14px 20px; }
+        .cart-item { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
+        .cart-item .item-emoji { font-size: 1.6rem; width: 42px; height: 42px; background: #f5f0e6; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+        .cart-item .item-info { flex: 1; }
+        .cart-item .item-name { font-size: 0.8rem; font-weight: 600; color: #2D5A27; }
+        .cart-item .item-price { font-size: 0.75rem; color: #ff4444; font-weight: 700; }
+        .cart-item .item-qty { display: flex; align-items: center; gap: 6px; margin-top: 3px; }
+        .cart-item .qty-btn { width: 22px; height: 22px; border-radius: 50%; border: 1px solid #2D5A27; background: #fff; color: #2D5A27; font-size: 0.75rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .cart-item .qty-btn:hover { background: #2D5A27; color: #fff; }
+        .cart-item .qty-num { font-weight: 700; font-size: 0.8rem; min-width: 16px; text-align: center; }
+        .cart-item .remove-btn { background: none; border: none; color: #ff4444; cursor: pointer; font-size: 0.9rem; }
+        .cart-footer { padding: 16px 20px; border-top: 1px solid #eee; }
+        .cart-total { display: flex; justify-content: space-between; font-size: 1rem; font-weight: 800; color: #2D5A27; margin-bottom: 12px; }
+        .pm-label { font-size: 0.7rem; font-weight: 600; color: #666; margin-bottom: 6px; }
+        .pm-options { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+        .pm-option { padding: 5px 10px; border-radius: 8px; border: 1.5px solid #ddd; font-size: 0.7rem; font-weight: 600; cursor: pointer; transition: all 0.2s; background: #fff; }
+        .pm-option:hover { border-color: #C5A55A; }
+        .pm-option.active { border-color: #2D5A27; background: #f0f7f0; color: #2D5A27; }
+        .wa-order-btn { width: 100%; background: #25D366; color: #fff; border: none; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .wa-order-btn:hover { background: #1da851; }
+        .cod-note { text-align: center; font-size: 0.7rem; color: #666; margin-top: 8px; }
+        .cart-empty { text-align: center; padding: 40px 20px; color: #999; }
+        .cart-empty .emoji { font-size: 3rem; margin-bottom: 10px; }
+
+        /* ===== TOAST ===== */
+        .toast { position: fixed; bottom: 70px; left: 50%; transform: translateX(-50%) translateY(100px); background: #2D5A27; color: #fff; padding: 12px 24px; border-radius: 10px; font-size: 0.85rem; font-weight: 600; z-index: 400; transition: all 0.3s ease; opacity: 0; }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .top-bar { padding: 8px 12px; }
+            .top-bar .logo { font-size: 0.95rem; }
+            .nav-left { gap: 0; }
+            .nav-link { padding: 12px 10px; font-size: 0.75rem; }
+            .nav-right .nav-link { display: none; }
+            .hero { flex-direction: column; text-align: center; padding: 30px 20px; }
+            .hero-text h2 { font-size: 1.6rem; }
+            .hero-btns { justify-content: center; }
+            .categories { grid-template-columns: repeat(3, 1fr); }
+            .products-grid, .flash-grid { grid-template-columns: repeat(2, 1fr); padding: 10px 16px 30px; }
+            .combo-grid, .reviews-grid { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .payment-grid { grid-template-columns: repeat(3, 1fr); }
+            .sale-banner h1 { font-size: 1.8rem; }
+            .countdown .time-box { min-width: 55px; padding: 10px 12px; }
+            .countdown .time-box .num { font-size: 1.4rem; }
+            .sort-bar { padding: 16px; }
+            .section { padding: 30px 16px; }
+            .flash-section { padding: 30px 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+    <div class="logo">🌿 Dr.<span>Ayurveda</span></div>
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search products..." oninput="doSearch(this.value)">
+        <button class="icon-btn" onclick="voiceSearch()" title="Voice Search">🎤</button>
+        <button class="icon-btn" onclick="cameraSearch()" title="Photo Search">📷</button>
+        <button class="icon-btn" onclick="doSearch(document.getElementById('searchInput').value)" title="Search">🔍</button>
+    </div>
+</div>
+
+<!-- NAV -->
+<nav>
+    <div class="nav-left">
+        <a class="nav-link active" data-page="home" onclick="switchPage('home')">🏠 Home</a>
+        <a class="nav-link" href="#deals" onclick="scrollToSection('deals')">⚡ Deals</a>
+        <a class="nav-link" href="#products" onclick="scrollToSection('products')">🛒 Products</a>
+        <a class="nav-link" href="#combos" onclick="scrollToSection('combos')">🎁 Combos</a>
+        <a class="nav-link" href="#reviews" onclick="scrollToSection('reviews')">⭐ Reviews</a>
+    </div>
+    <div class="nav-right">
+        <div class="nav-divider"></div>
+        <a class="nav-link" data-page="orders" onclick="switchPage('orders')">📦 My Orders</a>
+        <a class="nav-link" data-page="dashboard" onclick="switchPage('dashboard')">📊 Dashboard</a>
+        <button class="cart-btn" onclick="toggleCart()">🛒 Cart <span class="cart-count" id="cartCount">0</span></button>
+    </div>
+</nav>
+
+<!-- ===== HOME PAGE ===== -->
+<div class="page active" id="page-home">
+
+    <!-- SALE BANNER -->
+    <section class="sale-banner">
+        <span class="sale-badge">⚡ Limited Time Offer</span>
+        <h1>Big <span>Ayurveda</span> Days</h1>
+        <p class="sub">Up to <strong style="color:#C5A55A;">60% OFF</strong> | Extra 10% code: <strong style="color:#fff;">AYURVEDA10</strong></p>
+        <div class="countdown">
+            <div class="time-box"><div class="num" id="days">02</div><div class="label">Din</div></div>
+            <span class="separator">:</span>
+            <div class="time-box"><div class="num" id="hours">14</div><div class="label">Ghante</div></div>
+            <span class="separator">:</span>
+            <div class="time-box"><div class="num" id="minutes">32</div><div class="label">Min</div></div>
+            <span class="separator">:</span>
+            <div class="time-box"><div class="num" id="seconds">08</div><div class="label">Sec</div></div>
+        </div>
+        <div class="coupon-bar">
+            <div class="coupon"><span class="code">AYURVEDA10</span><span class="desc">10% OFF</span></div>
+            <div class="coupon"><span class="code">FIRST50</span><span class="desc">₹50 OFF</span></div>
+            <div class="coupon"><span class="code">COMBO20</span><span class="desc">20% Combos</span></div>
+        </div>
+    </section>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-text">
+            <span class="badge">✦ 100% Authentic & Ayurvedic</span>
+            <h2>Authentic Ayurveda<br>by <span>Dr. [Naam]</span></h2>
+            <p>BAMS-qualified doctor ne banaye pure herbal products. Koi chemical nahi, koi preservative nahi.</p>
+            <div class="hero-btns">
+                <a class="btn-primary" onclick="scrollToSection('deals')">🔥 Sale Deals</a>
+                <a class="btn-outline" href="https://wa.me/9174757014">WhatsApp Consult</a>
+            </div>
+        </div>
+        <div class="hero-img">
+            <div class="doc-card">
+                <div class="avatar">👩‍⚕️</div>
+                <h3>Dr. [Naam]</h3>
+                <div class="qual">BAMS | [X] Years Experience</div>
+                <p>"Ayurveda sirf dawai nahi, ek lifestyle hai."</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CATEGORIES -->
+    <section class="section">
+        <h2 class="section-title">Shop by Category</h2>
+        <p class="section-sub">Doctor-supervised, FSSAI certified</p>
+        <div class="categories">
+            <div class="cat-card" onclick="filterByCategory('Chawanprash')"><div class="icon">🍯</div><h4>Chawanprash</h4></div>
+            <div class="cat-card" onclick="filterByCategory('Herbal Oil')"><div class="icon">🫗</div><h4>Herbal Oil</h4></div>
+            <div class="cat-card" onclick="filterByCategory('Tablets')"><div class="icon">💊</div><h4>Tablets</h4></div>
+            <div class="cat-card" onclick="filterByCategory('Powder')"><div class="icon">🌾</div><h4>Powder</h4></div>
+            <div class="cat-card" onclick="filterByCategory('Herbal Tea')"><div class="icon">🍵</div><h4>Herbal Tea</h4></div>
+            <div class="cat-card" onclick="filterByCategory('Herbal Soap')"><div class="icon">🧼</div><h4>Herbal Soap</h4></div>
+        </div>
+    </section>
+
+    <!-- FLASH DEALS -->
+    <section class="flash-section" id="deals">
+        <div class="flash-header">
+            <h2>⚡ Flash <span>Deals</span></h2>
+            <span class="timer">🔥 Ends in 04:32:08</span>
+        </div>
+        <div class="flash-grid">
+            <div class="deal-card">
+                <span class="off-badge">60% OFF</span>
+                <span class="hot-badge">🔥 HOT</span>
+                <div class="img">🍯</div>
+                <div class="info">
+                    <div class="name">Amla Chawanprash 500g</div>
+                    <div class="stars">★★★★★ <span style="color:#999;font-size:0.65rem;">(234)</span></div>
+                    <div class="price-row"><span class="sale-price">₹199</span><span class="old-price">₹499</span><span class="save-tag">Save ₹300</span></div>
+                    <div class="stock-bar"><div class="fill" style="width:82%"></div></div>
+                    <div class="stock-text">🔥 82% sold — Sirf 14 bache!</div>
+                    <button class="buy-btn" onclick="addToCart('Amla Chawanprash 500g',199,'🍯',this)">🛒 Abhi Kharido</button>
+                </div>
+            </div>
+            <div class="deal-card">
+                <span class="off-badge">50% OFF</span>
+                <div class="img">🫗</div>
+                <div class="info">
+                    <div class="name">Bhringraj Hair Oil 200ml</div>
+                    <div class="stars">★★★★☆ <span style="color:#999;font-size:0.65rem;">(189)</span></div>
+                    <div class="price-row"><span class="sale-price">₹175</span><span class="old-price">₹349</span><span class="save-tag">Save ₹174</span></div>
+                    <div class="stock-bar"><div class="fill" style="width:65%"></div></div>
+                    <div class="stock-text">65% sold — 23 bache</div>
+                    <button class="buy-btn" onclick="addToCart('Bhringraj Hair Oil 200ml',175,'🫗',this)">🛒 Abhi Kharido</button>
+                </div>
+            </div>
+            <div class="deal-card">
+                <span class="off-badge">55% OFF</span>
+                <span class="hot-badge">🔥 HOT</span>
+                <div class="img">💊</div>
+                <div class="info">
+                    <div class="name">Ashwagandha 60 Tablets</div>
+                    <div class="stars">★★★★★ <span style="color:#999;font-size:0.65rem;">(312)</span></div>
+                    <div class="price-row"><span class="sale-price">₹135</span><span class="old-price">₹299</span><span class="save-tag">Save ₹164</span></div>
+                    <div class="stock-bar"><div class="fill" style="width:91%"></div></div>
+                    <div class="stock-text">⚠️ 91% sold — Sirf 5 bache!</div>
+                    <button class="buy-btn" onclick="addToCart('Ashwagandha 60 Tablets',135,'💊',this)">🛒 Abhi Kharido</button>
+                </div>
+            </div>
+            <div class="deal-card">
+                <span class="off-badge">45% OFF</span>
+                <div class="img">🍵</div>
+                <div class="info">
+                    <div class="name">Tulsi Ginger Tea (20s)</div>
+                    <div class="stars">★★★★☆ <span style="color:#999;font-size:0.65rem;">(97)</span></div>
+                    <div class="price-row"><span class="sale-price">₹137</span><span class="old-price">₹249</span><span class="save-tag">Save ₹112</span></div>
+                    <div class="stock-bar"><div class="fill" style="width:45%"></div></div>
+                    <div class="stock-text">45% sold — 40 bache</div>
+                    <button class="buy-btn" onclick="addToCart('Tulsi Ginger Tea 20s',137,'🍵',this)">🛒 Abhi Kharido</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SORT + PRODUCTS -->
+    <div class="sort-bar" id="products">
+        <span class="sort-title">🛒 All Products</span>
+        <div class="sort-options">
+            <button class="sort-btn active" onclick="sortProducts('default',this)">Default</button>
+            <button class="sort-btn" onclick="sortProducts('low',this)">₹ Low→High</button>
+            <button class="sort-btn" onclick="sortProducts('high',this)">₹ High→Low</button>
+            <button class="sort-btn" onclick="sortProducts('newest',this)">Newest</button>
+            <button class="sort-btn" onclick="sortProducts('rating',this)">⭐ Top Rated</button>
+            <button class="sort-btn" onclick="sortProducts('oos',this)">Out of Stock</button>
+        </div>
+    </div>
+    <div class="products-grid" id="productsGrid"></div>
+
+    <!-- COMBO -->
+    <section class="combo-section" id="combos">
+        <div class="combo-inner">
+            <h2>🎁 Combo Packs — Save More</h2>
+            <p>Doctor-curated bundles</p>
+            <div class="combo-grid">
+                <div class="combo-card">
+                    <div class="emoji">🛡️</div>
+                    <h4>Immunity Pack</h4>
+                    <p class="items">Chawanprash + Tulsi Tea + Ashwagandha</p>
+                    <span class="combo-price">₹999</span><span class="old-price">₹1,047</span>
+                    <button class="add-combo-btn" onclick="addToCart('Immunity Pack',999,'🛡️',this)">+ Add to Cart</button>
+                </div>
+                <div class="combo-card">
+                    <div class="emoji">✨</div>
+                    <h4>Skin & Hair Pack</h4>
+                    <p class="items">Bhringraj Oil + Soap + Amla Powder</p>
+                    <span class="combo-price">₹1,499</span><span class="old-price">₹1,697</span>
+                    <button class="add-combo-btn" onclick="addToCart('Skin & Hair Pack',1499,'✨',this)">+ Add to Cart</button>
+                </div>
+                <div class="combo-card">
+                    <div class="emoji">🧘</div>
+                    <h4>Stress Relief Pack</h4>
+                    <p class="items">Ashwagandha + Brahmi + Herbal Tea</p>
+                    <span class="combo-price">₹1,299</span><span class="old-price">₹1,447</span>
+                    <button class="add-combo-btn" onclick="addToCart('Stress Relief Pack',1299,'🧘',this)">+ Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- REVIEWS -->
+    <section class="section" id="reviews">
+        <h2 class="section-title">Customers Kya Kehte Hain</h2>
+        <p class="section-sub">Real reviews, real results</p>
+        <div class="reviews-grid">
+            <div class="review-card"><div class="stars">★★★★★</div><p>"Chawanprash bahut acha hai. Bachche ki immunity badh gayi."</p><div class="author">— Priya M., Delhi</div></div>
+            <div class="review-card"><div class="stars">★★★★★</div><p>"Hair oil use karke 2 mahine mein hair fall 70% kam."</p><div class="author">— Rahul S., Jaipur</div></div>
+            <div class="review-card"><div class="stars">★★★★☆</div><p>"Ashwagandha ne neend theek kar di. 2 hafte mein farak."</p><div class="author">— Ananya K., Mumbai</div></div>
+        </div>
+    </section>
+
+    <!-- WHATSAPP -->
+    <section class="wa-section">
+        <h2>📱 Free WhatsApp Consultation</h2>
+        <p>Apna dosha pata karo, product recommend karwayo</p>
+        <a href="https://wa.me/9174757014" class="wa-btn">💬 WhatsApp pe Poochho</a>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-logo">🌿 Dr. Ayurveda</div>
+        <p>Made with ❤️ in [City], India</p>
+        <p class="fssai">FSSAI: 1XXXXXXXXXXXXXX | GST: XXAAAAA0000A1Z5</p>
+        <p style="margin-top:10px;font-size:0.7rem;">© 2026 Dr. [Naam] Ayurveda</p>
+    </footer>
+</div>
+
+<!-- ===== MY ORDERS PAGE ===== -->
+<div class="page" id="page-orders">
+    <div class="orders-page">
+        <h2>📦 My Orders</h2>
+        <div class="filter-tabs">
+            <button class="filter-tab active" onclick="filterOrders('all',this)">All <span class="cnt">6</span></button>
+            <button class="filter-tab" onclick="filterOrders('ordered',this)">Ordered <span class="cnt">2</span></button>
+            <button class="filter-tab" onclick="filterOrders('shipped',this)">Shipped <span class="cnt">1</span></button>
+            <button class="filter-tab" onclick="filterOrders('delivered',this)">Delivered <span class="cnt">1</span></button>
+            <button class="filter-tab" onclick="filterOrders('cancelled',this)">Cancelled <span class="cnt">1</span></button>
+            <button class="filter-tab" onclick="filterOrders('exchange',this)">Exchange <span class="cnt">1</span></button>
+            <button class="filter-tab" onclick="filterOrders('return',this)">Return <span class="cnt">0</span></button>
+        </div>
+        <div id="ordersList"></div>
+    </div>
+</div>
+
+<!-- ===== DASHBOARD PAGE ===== -->
+<div class="page" id="page-dashboard">
+    <div class="dashboard">
+        <h2>📊 Dashboard</h2>
+        <p class="dash-sub">Store analytics & performance</p>
+        <div class="stats-grid">
+            <div class="stat-card"><div class="si">👁️</div><div class="sv">2,847</div><div class="sl">Total Views</div><div class="sc up">↑ 12% this week</div></div>
+            <div class="stat-card"><div class="si">📦</div><div class="sv">156</div><div class="sl">Total Orders</div><div class="sc up">↑ 8% this week</div></div>
+            <div class="stat-card"><div class="si">💰</div><div class="sv">₹1.2L</div><div class="sl">Revenue</div><div class="sc up">↑ 15% this week</div></div>
+            <div class="stat-card"><div class="si">🛒</div><div class="sv">4.2%</div><div class="sl">Conversion Rate</div><div class="sc down">↓ 0.3%</div></div>
+        </div>
+        <div class="dash-section">
+            <h3>💳 Payment Methods (This Month)</h3>
+            <div class="payment-grid">
+                <div class="payment-card"><div class="pi">📱</div><div class="pn">UPI/BHIM</div><div class="pa">₹42,300</div></div>
+                <div class="payment-card"><div class="pi">📲</div><div class="pn">PhonePe</div><div class="pa">₹28,100</div></div>
+                <div class="payment-card"><div class="pi">🅶</div><div class="pn">GPay</div><div class="pa">₹18,500</div></div>
+                <div class="payment-card"><div class="pi">💜</div><div class="pn">Paytm</div><div class="pa">₹12,800</div></div>
+                <div class="payment-card"><div class="pi">💵</div><div class="pn">COD</div><div class="pa">₹18,300</div></div>
+            </div>
+        </div>
+        <div class="dash-section">
+            <h3>📋 Recent Orders</h3>
+            <table class="dash-table">
+                <thead><tr><th>Order</th><th>Customer</th><th>Items</th><th>Amount</th><th>Payment</th><th>Status</th></tr></thead>
+                <tbody>
+                    <tr><td>#AYU-001</td><td>Priya M.</td><td>Chawanprash, Tea</td><td>₹648</td><td>UPI</td><td><span class="order-status st-delivered">Delivered</span></td></tr>
+                    <tr><td>#AYU-002</td><td>Rahul S.</td><td>Hair Oil ×2</td><td>₹698</td><td>GPay</td><td><span class="order-status st-shipped">Shipped</span></td></tr>
+                    <tr><td>#AYU-003</td><td>Ananya K.</td><td>Ashwagandha</td><td>₹299</td><td>PhonePe</td><td><span class="order-status st-ordered">Ordered</span></td></tr>
+                    <tr><td>#AYU-004</td><td>Vikram T.</td><td>Immunity Pack</td><td>₹999</td><td>Paytm</td><td><span class="order-status st-ordered">Ordered</span></td></tr>
+                    <tr><td>#AYU-005</td><td>Sneha R.</td><td>Soap, Powder</td><td>₹498</td><td>COD</td><td><span class="order-status st-cancelled">Cancelled</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="dash-section">
+            <h3>🏆 Top Selling Products</h3>
+            <table class="dash-table">
+                <thead><tr><th>Product</th><th>Sold</th><th>Revenue</th><th>Rating</th></tr></thead>
+                <tbody>
+                    <tr><td>🍯 Amla Chawanprash</td><td>45</td><td>₹22,455</td><td>⭐ 4.8</td></tr>
+                    <tr><td>💊 Ashwagandha Tablets</td><td>38</td><td>₹11,362</td><td>⭐ 4.9</td></tr>
+                    <tr><td>🫗 Bhringraj Hair Oil</td><td>31</td><td>₹10,819</td><td>⭐ 4.6</td></tr>
+                    <tr><td>🍵 Tulsi Ginger Tea</td><td>24</td><td>₹5,976</td><td>⭐ 4.5</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- URGENCY BAR -->
+<div class="urgency-bar">
+    ⚡ Sale khatam hone mein <span class="count" id="urgency-timer">02:14:32:08</span> | Extra 10%: <span class="count">AYURVEDA10</span> | COD Available
+</div>
+
+<!-- CART DRAWER -->
+<!-- CART DRAWER mein yeh ADD karo (cart-footer ke andar, wa-order-btn ke pehle) -->
+
+<!-- CUSTOMER DETAILS FORM -->
+<div id="customerForm" style="display:none; margin-bottom:12px;">
+    <div class="pm-label">📋 Apni Details Bharo:</div>
+    <input type="text" id="custName" placeholder="Naam *" style="width:100%;padding:10px;border:1.5px solid #eee;border-radius:8px;font-size:0.85rem;margin-bottom:8px;outline:none;">
+    <input type="tel" id="custPhone" placeholder="Phone Number *" style="width:100%;padding:10px;border:1.5px solid #eee;border-radius:8px;font-size:0.85rem;margin-bottom:8px;outline:none;">
+    <input type="email" id="custEmail" placeholder="Email (optional)" style="width:100%;padding:10px;border:1.5px solid #eee;border-radius:8px;font-size:0.85rem;margin-bottom:8px;outline:none;">
+    <textarea id="custAddress" placeholder="Full Address *" rows="2" style="width:100%;padding:10px;border:1.5px solid #eee;border-radius:8px;font-size:0.85rem;margin-bottom:8px;outline:none;resize:none;font-family:inherit;"></textarea>
+    <input type="text" id="custCity" placeholder="City *" style="width:100%;padding:10px;border:1.5px solid #eee;border-radius:8px;font-size:0.85rem;outline:none;">
+</div>   
+
+<!-- TOAST -->
+<div class="toast" id="toast">✅ Added to Cart!</div>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+const WA = '9174757014';
+let cart = [];
+
+// PRODUCTS DATA
+const products = [
+    { id: 1, name: 'Amla Chawanprash 500g', category: 'Chawanprash', price: 499, salePrice: 199, emoji: '🍯', rating: 4.8, reviews: 234, desc: 'Amla, Ashwagandha, Mulethi, Shatavari. Immunity booster.', oos: false, date: '2026-09-20' },
+    { id: 2, name: 'Bhringraj Hair Oil 200ml', category: 'Herbal Oil', price: 349, salePrice: 175, emoji: '🫗', rating: 4.6, reviews: 189, desc: 'Bhringraj, Amla, Brahmi. Hair fall solution.', oos: false, date: '2026-09-18' },
+    { id: 3, name: 'Ashwagandha 60 Tablets', category: 'Tablets', price: 299, salePrice: 135, emoji: '💊', rating: 4.9, reviews: 312, desc: 'Stress, anxiety, sleep improvement.', oos: false, date: '2026-09-22' },
+    { id: 4, name: 'Tulsi Ginger Tea (20s)', category: 'Herbal Tea', price: 249, salePrice: 137, emoji: '🍵', rating: 4.5, reviews: 97, desc: 'Tulsi, Adrak, Elaichi, Haldi.', oos: false, date: '2026-09-15' },
+    { id: 5, name: 'Amla Powder 200g', category: 'Powder', price: 199, salePrice: null, emoji: '🌾', rating: 4.7, reviews: 156, desc: 'Pure amla powder. Skin + hair health.', oos: false, date: '2026-09-23' },
+    { id: 6, name: 'Neem Herbal Soap', category: 'Herbal Soap', price: 99, salePrice: 64, emoji: '🧼', rating: 4.3, reviews: 78, desc: 'Neem, Tulsi, Haldi. Clear skin.', oos: true, date: '2026-09-10' },
+    { id: 7, name: 'Brahmi Powder 100g', category: 'Powder', price: 149, salePrice: null, emoji: '🌾', rating: 4.4, reviews: 65, desc: 'Memory booster. 1 tsp daily.', oos: false, date: '2026-09-24' },
+    { id: 8, name: 'Shatavari Tablets', category: 'Tablets', price: 249, salePrice: null, emoji: '💊', rating: 4.5, reviews: 112, desc: 'Women\'s health. Hormone balance.', oos: false, date: '2026-09-21' }
+];
+
+// ORDERS DATA
+const orders = [
+    { id: '#AYU-006', items: ['Amla Chawanprash', 'Tulsi Tea'], total: 336, status: 'ordered', date: '24 Sep 2026' },
+    { id: '#AYU-005', items: ['Hair Oil ×2'], total: 698, status: 'shipped', date: '22 Sep 2026' },
+    { id: '#AYU-004', items: ['Ashwagandha'], total: 135, status: 'delivered', date: '18 Sep 2026' },
+    { id: '#AYU-003', items: ['Immunity Pack'], total: 999, status: 'ordered', date: '20 Sep 2026' },
+    { id: '#AYU-002', items: ['Soap, Amla Powder'], total: 263, status: 'cancelled', date: '15 Sep 2026' },
+    { id: '#AYU-001', items: ['Brahmi Powder'], total: 149, status: 'exchange', date: '12 Sep 2026' }
+];
+
+// RENDER PRODUCTS
+function renderProducts(list) {
+    const grid = document.getElementById('productsGrid');
+    grid.innerHTML = list.map(p => `
+        <div class="product-card">
+            <div class="img">${p.emoji}
+                ${p.salePrice ? `<span class="off-badge">${Math.round((1-p.salePrice/p.price)*100)}% OFF</span>` : ''}
+                ${p.oos ? '<span class="oos-badge">Out of Stock</span>' : ''}
+            </div>
+            <div class="info">
+                <span class="tag">${p.category}</span>
+                <h4>${p.name}</h4>
+                <div class="stars">${'★'.repeat(Math.floor(p.rating))}${'☆'.repeat(5-Math.floor(p.rating))} <span class="cnt">(${p.reviews})</span></div>
+                <p class="desc">${p.desc}</p>
+                <div class="price-row">
+                    ${p.salePrice ? `<span class="sale-price">₹${p.salePrice}</span><span class="old-price">₹${p.price}</span>` : `<span class="price">₹${p.price}</span>`}
+                </div>
+                <div class="bottom">
+                    <span style="font-size:0.7rem;color:#999;">${p.oos ? '🚫 Unavailable' : '✅ In Stock'}</span>
+                    <button class="add-btn" ${p.oos ? 'disabled' : ''} onclick="addToCart('${p.name}',${p.salePrice||p.price},'${p.emoji}',this)">+</button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+renderProducts(products);
+
+// SORT
+function sortProducts(type, btn) {
+    document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    let list = [...products];
+    if (type === 'low') list.sort((a,b) => (a.salePrice||a.price) - (b.salePrice||b.price));
+    else if (type === 'high') list.sort((a,b) => (b.salePrice||b.price) - (a.salePrice||a.price));
+    else if (type === 'newest') list.sort((a,b) => new Date(b.date) - new Date(a.date));
+    else if (type === 'rating') list.sort((a,b) => b.rating - a.rating);
+    else if (type === 'oos') list.sort((a,b) => (a.oos?0:1) - (b.oos?0:1));
+    renderProducts(list);
+}
+
+// SEARCH
+function doSearch(q) {
+    q = q.toLowerCase();
+    const filtered = products.filter(p => p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q));
+    renderProducts(filtered);
+    if (q) scrollToSection('products');
+}
+
+// CATEGORY FILTER
+function filterByCategory(cat) {
+    const filtered = products.filter(p => p.category === cat);
+    renderProducts(filtered);
+    scrollToSection('products');
+}
+
+// VOICE SEARCH
+function voiceSearch() {
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const rec = new SR();
+        rec.lang = 'hi-IN';
+        rec.onresult = function(e) {
+            const text = e.results[0][0].transcript;
+            document.getElementById('searchInput').value = text;
+            doSearch(text);
+        };
+        rec.start();
+    } else {
+        showToast('🎤 Voice search not supported in this browser');
+    }
+}
+
+// CAMERA SEARCH
+function cameraSearch() {
+    showToast('📷 Camera search — feature coming soon!');
+}
+
+// SCROLL TO SECTION
+function scrollToSection(id) {
+    switchPage('home');
+    setTimeout(() => {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+}
+
+// PAGE SWITCH
+function switchPage(page) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + page).classList.add('active');
+    document.querySelectorAll('.nav-link[data-page]').forEach(l => l.classList.remove('active'));
+    const activeLink = document.querySelector(`.nav-link[data-page="${page}"]`);
+    if (activeLink) activeLink.classList.add('active');
+    window.scrollTo(0, 0);
+    if (page === 'orders') renderOrders('all');
+}
+
+// CART
+function addToCart(name, price, emoji, btn) {
+    const existing = cart.find(i => i.name === name);
+    if (existing) { existing.qty++; }
+    else { cart.push({ name, price, emoji, qty: 1 }); }
+    updateCartUI();
+    showToast();
+    if (btn) {
+        const orig = btn.textContent;
+        btn.textContent = '✅ Added!';
+        btn.classList.add('added');
+        setTimeout(() => { btn.textContent = orig; btn.classList.remove('added'); }, 1500);
+    }
+}
+
+function updateQty(name, delta) {
+    const item = cart.find(i => i.name === name);
+    if (item) {
+        item.qty += delta;
+        if (item.qty <= 0) cart = cart.filter(i => i.name !== name);
+        updateCartUI();
+    }
+}
+
+function removeItem(name) {
+    cart = cart.filter(i => i.name !== name);
+    updateCartUI();
+}
+
+function updateCartUI() {
+    const count = cart.reduce((s, i) => s + i.qty, 0);
+    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    document.getElementById('cartCount').textContent = count;
+    document.getElementById('cartTotal').textContent = '₹' + total.toLocaleString('en-IN');
+    const itemsDiv = document.getElementById('cartItems');
+    const footerDiv = document.getElementById('cartFooter');
+    if (cart.length === 0) {
+        itemsDiv.innerHTML = '<div class="cart-empty"><div class="emoji">🛒</div><p>Cart khaali hai</p></div>';
+        footerDiv.style.display = 'none';
+    } else {
+        footerDiv.style.display = 'block';
+        itemsDiv.innerHTML = cart.map(item => `
+            <div class="cart-item">
+                <div class="item-emoji">${item.emoji}</div>
+                <div class="item-info">
+                    <div class="item-name">${item.name}</div>
+                    <div class="item-price">₹${item.price} × ${item.qty} = ₹${(item.price*item.qty).toLocaleString('en-IN')}</div>
+                    <div class="item-qty">
+                        <button class="qty-btn" onclick="updateQty('${item.name}',-1)">−</button>
+                        <span class="qty-num">${item.qty}</span>
+                        <button class="qty-btn" onclick="updateQty('${item.name}',1)">+</button>
+                    </div>
+                </div>
+                <button class="remove-btn" onclick="removeItem('${item.name}')">🗑️</button>
+            </div>
+        `).join('');
+    }
+}
+
+function toggleCart() {
+    document.getElementById('cartDrawer').classList.toggle('active');
+    document.getElementById('cartOverlay').classList.toggle('active');
+}
+
+function selectPM(el) {
+    document.querySelectorAll('.pm-option').forEach(o => o.classList.remove('active'));
+    el.classList.add('active');
+}
+
+function orderViaWhatsApp() {
+    if (cart.length === 0) return;
+
+    // Show customer form
+    const form = document.getElementById('customerForm');
+    form.style.display = 'block';
+    form.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+    const name = document.getElementById('custName').value.trim();
+    const phone = document.getElementById('custPhone').value.trim();
+    const email = document.getElementById('custEmail').value.trim();
+    const address = document.getElementById('custAddress').value.trim();
+    const city = document.getElementById('custCity').value.trim();
+
+    if (!name || !phone || !address || !city) {
+        showToast('⚠️ Naam, Phone, Address, City zaroori hai!');
+        return;
+    }
+
+    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    const pm = document.querySelector('.pm-option.active');
+
+    // Build WhatsApp message
+    let msg = '🛒 *NEW ORDER — Dr. Ayurveda Shop*\n\n';
+    msg += '━━━━━━━━━━━━━━\n';
+    msg += '👤 *CUSTOMER DETAILS*\n';
+    msg += `Name: ${name}\n`;
+    msg += `Phone: ${phone}\n`;
+    msg += `Email: ${email || 'N/A'}\n`;
+    msg += `Address: ${address}\n`;
+    msg += `City: ${city}\n`;
+    msg += '━━━━━━━━━━━━━━\n\n';
+    msg += '📦 *ORDER ITEMS*\n';
+    cart.forEach((item, i) => {
+        msg += `${i+1}. ${item.name} × ${item.qty} = ₹${(item.price*item.qty).toLocaleString('en-IN')}\n`;
+    });
+    msg += '\n━━━━━━━━━━━━━━\n';
+    msg += `💰 *TOTAL: ₹${total.toLocaleString('en-IN')}*\n`;
+    msg += `💳 Payment: ${pm ? pm.textContent : 'UPI'}\n`;
+    msg += `📅 Date: ${new Date().toLocaleDateString('en-IN')}\n`;
+
+    // Save to localStorage (admin.html mein dikhega)
+    const orderId = 'AYU-' + String(Date.now()).slice(-5);
+    const newOrder = {
+        id: orderId,
+        date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
+        name, phone, email, address, city,
+        items: cart.map(i => `${i.name} × ${i.qty}`),
+        total,
+        payment: pm ? pm.textContent : 'UPI',
+        status: 'ordered'
+    };
+
+    let existingOrders = JSON.parse(localStorage.getItem('ayurveda_orders')) || [];
+    existingOrders.unshift(newOrder);
+    localStorage.setItem('ayurveda_orders', JSON.stringify(existingOrders));
+
+    // Open WhatsApp
+    window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`, '_blank');
+
+    // Clear cart
+    cart = [];
+    updateCartUI();
+    form.style.display = 'none';
+    document.getElementById('custName').value = '';
+    document.getElementById('custPhone').value = '';
+    document.getElementById('custEmail').value = '';
+    document.getElementById('custAddress').value = '';
+    document.getElementById('custCity').value = '';
+    toggleCart();
+    showToast('✅ Order Placed! WhatsApp khul gaya.');
+}   
+
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg || '✅ Added to Cart!';
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+// ORDERS
+function renderOrders(filter) {
+    const list = document.getElementById('ordersList');
+    const filtered = filter === 'all' ? orders : orders.filter(o => o.status === filter);
+    if (filtered.length === 0) {
+        list.innerHTML = '<p style="text-align:center;color:#999;padding:30px;">Koi order nahi mila is status mein</p>';
+        return;
+    }
+    list.innerHTML = filtered.map(o => `
+        <div class="order-card">
+            <div class="order-top">
+                <span class="order-id">${o.id} | ${o.date}</span>
+                <span class="order-status st-${o.status}">${o.status.charAt(0).toUpperCase()+o.status.slice(1)}</span>
+            </div>
+            <div class="order-items">${o.items.map(i => `<span class="oi">${i}</span>`).join('')}</div>
+            <div class="order-bottom">
+                <span class="order-total">₹${o.total.toLocaleString('en-IN')}</span>
+                <span class="order-date">Payment: UPI</span>
+            </div>
+        </div>
+    `).join('');
+}
+
+function filterOrders(status, btn) {
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    renderOrders(status);
+}
+
+// COUNTDOWN
+const saleEnd = new Date();
+saleEnd.setDate(saleEnd.getDate() + 2);
+saleEnd.setHours(23, 59, 59);
+function updateCountdown() {
+    const diff = saleEnd - new Date();
+    if (diff <= 0) return;
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    const pad = n => String(n).padStart(2, '0');
+    document.getElementById('days').textContent = pad(d);
+    document.getElementById('hours').textContent = pad(h);
+    document.getElementById('minutes').textContent = pad(m);
+    document.getElementById('seconds').textContent = pad(s);
+    document.getElementById('urgency-timer').textContent = `${pad(d)}:${pad(h)}:${pad(m)}:${pad(s)}`;
+}
+setInterval(updateCountdown, 1000);
+updateCountdown();
+</script>
+
+</body>
+</html>   
