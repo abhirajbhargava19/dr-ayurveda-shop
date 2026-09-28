@@ -26,7 +26,7 @@
         .nav-link:hover { color: #2D5A27; }
         .nav-link.active { color: #2D5A27; border-bottom-color: #C5A55A; }
         .nav-divider { width: 1px; height: 24px; background: #eee; margin: 0 8px; }
-        .cart-btn { background: #2D5A27; color: #fff; border: none; padding: 8px 18px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; position: relative; font-weight: 600; z-index: 100; }
+        .cart-btn { background: #2D5A27; color: #fff; border: none; padding: 8px 18px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; position: relative; font-weight: 600; }
         .cart-btn .cart-count { background: #ff4444; color: #fff; width: 18px; height: 18px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 800; margin-left: 4px; }
 
         /* ===== PAGES ===== */
@@ -47,7 +47,7 @@
         .countdown .time-box .label { font-size: 0.65rem; color: #a8c0a0; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
         .countdown .separator { font-size: 1.5rem; color: #C5A55A; align-self: center; font-weight: 700; }
         .coupon-bar { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; position: relative; }
-        .coupon { background: rgba(197,165,90,0.1); border: 2px dashed #C5A55A; border-radius: 10px; padding: 8px 18px; display: flex; align-items: center; gap: 8px; cursor: pointer; transition: all 0.2s; }
+        .coupon { background: rgba(197,165,90,0.1); border: 2px dashed #C5A55A; border-radius: 10px; padding: 8px 18px; display: flex; align-items: center; gap: 8px; cursor: pointer; transition: all 0.2s; font: inherit; }
         .coupon:hover { background: rgba(197,165,90,0.2); transform: scale(1.05); }
         .coupon .code { font-weight: 800; color: #C5A55A; font-size: 0.85rem; letter-spacing: 1px; }
         .coupon .desc { font-size: 0.7rem; color: #a8c0a0; }
@@ -104,6 +104,9 @@
         .deal-card .buy-btn { width: 100%; background: #2D5A27; color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: 700; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; }
         .deal-card .buy-btn:hover { background: #1a3d15; }
         .deal-card .buy-btn.added { background: #C5A55A; }
+        .deal-card, .product-card, .combo-card { cursor: pointer; }
+        .card-detail-btn { background: none; border: none; padding: 4px 0 8px; color: #2D5A27; font-size: 0.75rem; font-weight: 700; cursor: pointer; }
+        .card-detail-btn:hover { text-decoration: underline; }
 
         /* ===== SORT BAR ===== */
         .sort-bar { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px 10px; max-width: 1200px; margin: 0 auto; flex-wrap: wrap; gap: 10px; }
@@ -122,6 +125,9 @@
         .product-card .oos-badge { position: absolute; top: 10px; right: 10px; background: #999; color: #fff; padding: 3px 10px; border-radius: 5px; font-size: 0.65rem; font-weight: 700; }
         .product-card .info { padding: 14px; }
         .product-card .tag { display: inline-block; background: #f0f7f0; color: #2D5A27; font-size: 0.65rem; padding: 2px 8px; border-radius: 8px; font-weight: 600; margin-bottom: 5px; }
+        .product-card .product-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+        .product-card .wishlist-toggle { border: 0; background: transparent; color: #c62828; font-size: 1.35rem; line-height: 1; cursor: pointer; }
+        .product-card .wishlist-toggle:hover { transform: scale(1.15); }
         .product-card h4 { font-size: 0.9rem; margin-bottom: 4px; color: #2D5A27; }
         .product-card .stars { color: #C5A55A; font-size: 0.75rem; margin-bottom: 5px; }
         .product-card .stars .cnt { color: #999; font-size: 0.65rem; }
@@ -149,6 +155,34 @@
         .combo-card .old-price { text-decoration: line-through; color: #888; font-size: 0.85rem; margin-left: 6px; }
         .combo-card .add-combo-btn { margin-top: 12px; background: #C5A55A; color: #1a2e15; border: none; padding: 8px 20px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.8rem; transition: transform 0.2s; }
         .combo-card .add-combo-btn:hover { transform: scale(1.05); }
+
+        /* ===== PRODUCT DETAILS ===== */
+        .detail-overlay { position: fixed; inset: 0; z-index: 500; display: none; align-items: center; justify-content: center; padding: 20px; background: rgba(0,0,0,0.58); }
+        .detail-overlay.active { display: flex; }
+        .detail-modal { position: relative; display: grid; grid-template-columns: 0.85fr 1.15fr; width: min(900px, 100%); max-height: 90vh; overflow: auto; background: #fff; border-radius: 12px; box-shadow: 0 18px 60px rgba(0,0,0,0.25); }
+        .detail-visual { min-height: 380px; display: flex; align-items: center; justify-content: center; background: linear-gradient(145deg, #f5f0e6, #fff8e7); font-size: 7rem; }
+        .detail-content { padding: 32px; color: #333; }
+        .detail-close { position: absolute; top: 12px; right: 12px; z-index: 1; width: 36px; height: 36px; border: 0; border-radius: 50%; background: #fff; color: #444; font-size: 1.4rem; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+        .detail-kicker { color: #2D5A27; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; }
+        .detail-content h2 { margin: 8px 36px 8px 0; color: #222; font-size: 1.5rem; line-height: 1.25; }
+        .detail-rating { margin-bottom: 16px; color: #8a6414; font-size: 0.8rem; }
+        .detail-description { margin-bottom: 18px; color: #555; font-size: 0.9rem; line-height: 1.6; }
+        .detail-price-row { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; margin: 18px 0 6px; }
+        .detail-price { color: #222; font-size: 1.8rem; font-weight: 800; }
+        .detail-mrp { color: #777; font-size: 0.9rem; text-decoration: line-through; }
+        .detail-discount { color: #237a3b; font-size: 0.85rem; font-weight: 700; }
+        .detail-savings { color: #237a3b; font-size: 0.8rem; margin-bottom: 16px; }
+        .detail-stock { display: inline-block; margin-bottom: 18px; padding: 5px 9px; border-radius: 4px; background: #edf7ee; color: #237a3b; font-size: 0.75rem; font-weight: 700; }
+        .detail-stock.out { background: #f5f5f5; color: #777; }
+        .detail-content h3 { margin: 8px 0; color: #222; font-size: 0.95rem; }
+        .detail-list { margin: 0 0 20px; padding-left: 18px; color: #555; font-size: 0.82rem; line-height: 1.7; }
+        .detail-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; border-top: 1px solid #eee; padding-top: 18px; }
+        .detail-quantity { display: flex; align-items: center; gap: 12px; height: 42px; padding: 0 8px; border: 1px solid #ddd; border-radius: 6px; }
+        .detail-quantity button { width: 28px; height: 28px; border: 0; background: #f4f4f4; font-size: 1.1rem; cursor: pointer; }
+        .detail-quantity span { min-width: 18px; text-align: center; font-weight: 700; }
+        .detail-action-btn { flex: 1; min-width: 130px; min-height: 42px; border: 0; border-radius: 6px; background: #ff9f00; color: #222; font-weight: 800; cursor: pointer; }
+        .detail-action-btn.primary { background: #2D5A27; color: #fff; }
+        .detail-action-btn:disabled { background: #ccc; color: #666; cursor: not-allowed; }
 
         /* ===== REVIEWS ===== */
         .reviews-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
@@ -210,6 +244,7 @@
         .stat-card .sc.down { color: #c62828; }
         .dash-section { background: #fff; border-radius: 14px; padding: 20px; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
         .dash-section h3 { font-size: 1rem; color: #2D5A27; margin-bottom: 14px; }
+        .dash-table-wrap { width: 100%; min-width: 0; overflow-x: auto; -webkit-overflow-scrolling: touch; }
         .dash-table { width: 100%; border-collapse: collapse; }
         .dash-table th { text-align: left; padding: 8px; font-size: 0.7rem; color: #999; text-transform: uppercase; border-bottom: 1px solid #eee; }
         .dash-table td { padding: 10px 8px; font-size: 0.8rem; border-bottom: 1px solid #f5f5f5; }
@@ -238,13 +273,45 @@
         .cart-item .qty-btn:hover { background: #2D5A27; color: #fff; }
         .cart-item .qty-num { font-weight: 700; font-size: 0.8rem; min-width: 16px; text-align: center; }
         .cart-item .remove-btn { background: none; border: none; color: #ff4444; cursor: pointer; font-size: 0.9rem; }
-        .cart-footer { padding: 16px 20px; border-top: 1px solid #eee; }
+        .cart-footer { max-height: calc(100vh - 90px); overflow-y: auto; overscroll-behavior: contain; padding: 16px 20px; border-top: 1px solid #eee; }
         .cart-total { display: flex; justify-content: space-between; font-size: 1rem; font-weight: 800; color: #2D5A27; margin-bottom: 12px; }
+        .cart-subtotal, .cart-discount { display: flex; justify-content: space-between; margin-bottom: 7px; color: #666; font-size: 0.78rem; }
+        .cart-discount { color: #237a3b; }
+        .coupon-form { margin: 12px 0; }
+        .coupon-input-row { display: flex; gap: 6px; }
+        .coupon-input-row input { flex: 1; min-width: 0; padding: 9px 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 0.8rem; text-transform: uppercase; }
+        .coupon-input-row button { padding: 0 12px; border: 0; border-radius: 6px; background: #2D5A27; color: #fff; font-weight: 700; cursor: pointer; }
+        .coupon-message { min-height: 16px; margin-top: 5px; color: #237a3b; font-size: 0.7rem; }
+        .coupon-message.error { color: #c62828; }
         .pm-label { font-size: 0.7rem; font-weight: 600; color: #666; margin-bottom: 6px; }
-        .pm-options { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
-        .pm-option { padding: 5px 10px; border-radius: 8px; border: 1.5px solid #ddd; font-size: 0.7rem; font-weight: 600; cursor: pointer; transition: all 0.2s; background: #fff; }
+        .pm-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-bottom: 10px; }
+        .pm-option { min-width: 0; min-height: 46px; padding: 8px; border-radius: 8px; border: 1.5px solid #ddd; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s; background: #fff; }
         .pm-option:hover { border-color: #C5A55A; }
         .pm-option.active { border-color: #2D5A27; background: #f0f7f0; color: #2D5A27; }
+        .payment-feedback { min-height: 34px; margin-bottom: 10px; color: #555; font-size: 0.72rem; line-height: 1.45; }
+        .checkout-review { margin: 10px 0 14px; padding: 12px; border: 1px solid #e8e8e8; border-radius: 8px; background: #fafbf9; }
+        .checkout-review-top, .checkout-review-delivery > div { display: flex; justify-content: space-between; gap: 8px; }
+        .checkout-review-top { margin-bottom: 8px; color: #333; font-size: 0.78rem; }
+        .checkout-review-count { color: #777; font-size: 0.68rem; }
+        .checkout-review-items { max-height: 112px; overflow-y: auto; margin-bottom: 8px; }
+        .checkout-review-item { display: flex; justify-content: space-between; gap: 8px; padding: 4px 0; color: #555; font-size: 0.7rem; }
+        .checkout-review-item span:first-child { min-width: 0; overflow-wrap: anywhere; }
+        .checkout-review-delivery { padding-top: 8px; border-top: 1px solid #e8e8e8; color: #555; font-size: 0.7rem; }
+        .checkout-review-delivery strong { text-align: right; overflow-wrap: anywhere; }
+        .checkout-review-delivery p { margin-top: 4px; color: #666; overflow-wrap: anywhere; }
+        .upi-payment-panel { margin: 0 0 12px; padding: 12px; border: 1px solid #e5e5e5; border-radius: 10px; background: #fff; }
+        .upi-payment-title { margin-bottom: 10px; color: #333; font-size: 0.8rem; font-weight: 700; }
+        .upi-payment-layout { display: grid; grid-template-columns: 144px minmax(0, 1fr); gap: 12px; align-items: center; }
+        .upi-qr { width: 144px; height: 144px; display: grid; place-items: center; padding: 4px; border: 1px solid #eee; border-radius: 6px; background: #fff; }
+        .upi-qr img, .upi-qr canvas { display: block; max-width: 100%; height: auto; }
+        .upi-details { min-width: 0; color: #444; font-size: 0.74rem; }
+        .upi-amount { margin-bottom: 10px; font-weight: 700; }
+        .upi-id-label { display: block; margin-bottom: 4px; color: #777; font-size: 0.68rem; }
+        .upi-id-row { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; }
+        .upi-id-row strong { overflow-wrap: anywhere; color: #222; }
+        .upi-copy-btn, .upi-open-app { display: inline-flex; align-items: center; justify-content: center; min-height: 34px; margin-top: 8px; padding: 6px 9px; border: 1px solid #2D5A27; border-radius: 5px; background: #fff; color: #2D5A27; font-size: 0.7rem; font-weight: 700; text-decoration: none; cursor: pointer; }
+        .upi-open-app { background: #2D5A27; color: #fff; }
+        .upi-note { margin-top: 10px; color: #666; font-size: 0.67rem; line-height: 1.4; }
         .wa-order-btn { width: 100%; background: #25D366; color: #fff; border: none; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .wa-order-btn:hover { background: #1da851; }
         .cod-note { text-align: center; font-size: 0.7rem; color: #666; margin-top: 8px; }
@@ -257,9 +324,13 @@
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
-            .top-bar { padding: 8px 12px; }
+            .top-bar { padding: 8px 12px; gap: 8px; min-width: 0; }
             .top-bar .logo { font-size: 0.95rem; }
-            .nav-left { gap: 0; }
+            .search-box { min-width: 0; padding: 7px 8px; gap: 4px; }
+            .search-box input { min-width: 0; }
+            nav { gap: 4px; padding: 0 8px; }
+            .nav-left { flex: 1; min-width: 0; gap: 0; }
+            .nav-right { flex: 0 0 auto; }
             .nav-link { padding: 12px 10px; font-size: 0.75rem; }
             .nav-right .nav-link { display: none; }
             .hero { flex-direction: column; text-align: center; padding: 30px 20px; }
@@ -269,13 +340,35 @@
             .products-grid, .flash-grid { grid-template-columns: repeat(2, 1fr); padding: 10px 16px 30px; }
             .combo-grid, .reviews-grid { grid-template-columns: 1fr; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .payment-grid { grid-template-columns: repeat(3, 1fr); }
+            .payment-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .orders-page, .dashboard { padding: 24px 16px; }
+            .filter-tabs { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 8px; scrollbar-width: thin; }
+            .filter-tab { flex: 0 0 auto; }
+            .order-card { padding: 14px; }
+            .order-card .order-top { align-items: flex-start; gap: 8px; }
+            .order-card .order-bottom { flex-wrap: wrap; gap: 6px 12px; }
+            .dash-section { padding: 14px; }
+            .dash-table { min-width: 580px; }
             .sale-banner h1 { font-size: 1.8rem; }
             .countdown .time-box { min-width: 55px; padding: 10px 12px; }
             .countdown .time-box .num { font-size: 1.4rem; }
             .sort-bar { padding: 16px; }
             .section { padding: 30px 16px; }
             .flash-section { padding: 30px 16px; }
+            .detail-overlay { padding: 10px; }
+            .detail-modal { grid-template-columns: 1fr; max-height: 94vh; }
+            .detail-visual { min-height: 180px; font-size: 4.5rem; }
+            .detail-content { padding: 20px; }
+            .detail-content h2 { font-size: 1.25rem; }
+            .upi-payment-layout { grid-template-columns: 116px minmax(0, 1fr); gap: 8px; }
+            .upi-qr { width: 116px; height: 116px; }
+        }
+        @media (max-width: 480px) {
+            .search-box .icon-btn[title="Voice Search"], .search-box .icon-btn[title="Photo Search"] { display: none; }
+            .stats-grid { gap: 10px; }
+            .stat-card { padding: 14px 8px; }
+            .stat-card .sv { font-size: 1.35rem; }
+            .orders-page, .dashboard { padding: 20px 12px; }
         }
     </style>
 </head>
@@ -285,10 +378,10 @@
 <div class="top-bar">
     <div class="logo">🌿 Dr.<span>Ayurveda</span></div>
     <div class="search-box">
-        <input type="text" id="searchInput" placeholder="Search products..." oninput="doSearch(this.value)">
+        <input type="text" id="searchInput" placeholder="Search products..." oninput="doSearch(this.value)" onkeydown="if (event.key === 'Enter') doSearch(this.value, true)">
         <button class="icon-btn" onclick="voiceSearch()" title="Voice Search">🎤</button>
         <button class="icon-btn" onclick="cameraSearch()" title="Photo Search">📷</button>
-        <button class="icon-btn" onclick="doSearch(document.getElementById('searchInput').value)" title="Search">🔍</button>
+        <button class="icon-btn" onclick="doSearch(document.getElementById('searchInput').value, true)" title="Search">🔍</button>
     </div>
 </div>
 
@@ -327,9 +420,9 @@
             <div class="time-box"><div class="num" id="seconds">08</div><div class="label">Sec</div></div>
         </div>
         <div class="coupon-bar">
-            <div class="coupon"><span class="code">AYURVEDA10</span><span class="desc">10% OFF</span></div>
-            <div class="coupon"><span class="code">FIRST50</span><span class="desc">₹50 OFF</span></div>
-            <div class="coupon"><span class="code">COMBO20</span><span class="desc">20% Combos</span></div>
+            <button type="button" class="coupon" onclick="useCoupon('AYURVEDA10')"><span class="code">AYURVEDA10</span><span class="desc">10% OFF</span></button>
+            <button type="button" class="coupon" onclick="useCoupon('FIRST50')"><span class="code">FIRST50</span><span class="desc">₹50 OFF</span></button>
+            <button type="button" class="coupon" onclick="useCoupon('COMBO20')"><span class="code">COMBO20</span><span class="desc">20% Combos</span></button>
         </div>
     </section>
 
@@ -375,7 +468,7 @@
             <span class="timer">🔥 Ends in 04:32:08</span>
         </div>
         <div class="flash-grid">
-            <div class="deal-card">
+            <div class="deal-card" onclick="openProductDetails(1)">
                 <span class="off-badge">60% OFF</span>
                 <span class="hot-badge">🔥 HOT</span>
                 <div class="img">🍯</div>
@@ -385,10 +478,11 @@
                     <div class="price-row"><span class="sale-price">₹199</span><span class="old-price">₹499</span><span class="save-tag">Save ₹300</span></div>
                     <div class="stock-bar"><div class="fill" style="width:82%"></div></div>
                     <div class="stock-text">🔥 82% sold — Sirf 14 bache!</div>
-                    <button class="buy-btn" onclick="addToCart('Amla Chawanprash 500g',199,'🍯',this)">🛒 Abhi Kharido</button>
+                    <button class="card-detail-btn" onclick="event.stopPropagation(); openProductDetails(1)">View details</button>
+                    <button class="buy-btn" onclick="event.stopPropagation(); addToCart('Amla Chawanprash 500g',199,'🍯',this)">🛒 Abhi Kharido</button>
                 </div>
             </div>
-            <div class="deal-card">
+            <div class="deal-card" onclick="openProductDetails(2)">
                 <span class="off-badge">50% OFF</span>
                 <div class="img">🫗</div>
                 <div class="info">
@@ -397,10 +491,11 @@
                     <div class="price-row"><span class="sale-price">₹175</span><span class="old-price">₹349</span><span class="save-tag">Save ₹174</span></div>
                     <div class="stock-bar"><div class="fill" style="width:65%"></div></div>
                     <div class="stock-text">65% sold — 23 bache</div>
-                    <button class="buy-btn" onclick="addToCart('Bhringraj Hair Oil 200ml',175,'🫗',this)">🛒 Abhi Kharido</button>
+                    <button class="card-detail-btn" onclick="event.stopPropagation(); openProductDetails(2)">View details</button>
+                    <button class="buy-btn" onclick="event.stopPropagation(); addToCart('Bhringraj Hair Oil 200ml',175,'🫗',this)">🛒 Abhi Kharido</button>
                 </div>
             </div>
-            <div class="deal-card">
+            <div class="deal-card" onclick="openProductDetails(3)">
                 <span class="off-badge">55% OFF</span>
                 <span class="hot-badge">🔥 HOT</span>
                 <div class="img">💊</div>
@@ -410,10 +505,11 @@
                     <div class="price-row"><span class="sale-price">₹135</span><span class="old-price">₹299</span><span class="save-tag">Save ₹164</span></div>
                     <div class="stock-bar"><div class="fill" style="width:91%"></div></div>
                     <div class="stock-text">⚠️ 91% sold — Sirf 5 bache!</div>
-                    <button class="buy-btn" onclick="addToCart('Ashwagandha 60 Tablets',135,'💊',this)">🛒 Abhi Kharido</button>
+                    <button class="card-detail-btn" onclick="event.stopPropagation(); openProductDetails(3)">View details</button>
+                    <button class="buy-btn" onclick="event.stopPropagation(); addToCart('Ashwagandha 60 Tablets',135,'💊',this)">🛒 Abhi Kharido</button>
                 </div>
             </div>
-            <div class="deal-card">
+            <div class="deal-card" onclick="openProductDetails(4)">
                 <span class="off-badge">45% OFF</span>
                 <div class="img">🍵</div>
                 <div class="info">
@@ -422,7 +518,8 @@
                     <div class="price-row"><span class="sale-price">₹137</span><span class="old-price">₹249</span><span class="save-tag">Save ₹112</span></div>
                     <div class="stock-bar"><div class="fill" style="width:45%"></div></div>
                     <div class="stock-text">45% sold — 40 bache</div>
-                    <button class="buy-btn" onclick="addToCart('Tulsi Ginger Tea 20s',137,'🍵',this)">🛒 Abhi Kharido</button>
+                    <button class="card-detail-btn" onclick="event.stopPropagation(); openProductDetails(4)">View details</button>
+                    <button class="buy-btn" onclick="event.stopPropagation(); addToCart('Tulsi Ginger Tea (20s)',137,'🍵',this)">🛒 Abhi Kharido</button>
                 </div>
             </div>
         </div>
@@ -430,8 +527,9 @@
 
     <!-- SORT + PRODUCTS -->
     <div class="sort-bar" id="products">
-        <span class="sort-title">🛒 All Products</span>
+        <span class="sort-title" id="sortTitle">🛒 All Products</span>
         <div class="sort-options">
+            <button class="sort-btn" id="wishlistToggle" aria-pressed="false" onclick="toggleWishlistView()">♡ Wishlist (<span id="wishlistCount">0</span>)</button>
             <button class="sort-btn active" onclick="sortProducts('default',this)">Default</button>
             <button class="sort-btn" onclick="sortProducts('low',this)">₹ Low→High</button>
             <button class="sort-btn" onclick="sortProducts('high',this)">₹ High→Low</button>
@@ -448,26 +546,29 @@
             <h2>🎁 Combo Packs — Save More</h2>
             <p>Doctor-curated bundles</p>
             <div class="combo-grid">
-                <div class="combo-card">
+                <div class="combo-card" onclick="openComboDetails('immunity')">
                     <div class="emoji">🛡️</div>
                     <h4>Immunity Pack</h4>
                     <p class="items">Chawanprash + Tulsi Tea + Ashwagandha</p>
                     <span class="combo-price">₹999</span><span class="old-price">₹1,047</span>
-                    <button class="add-combo-btn" onclick="addToCart('Immunity Pack',999,'🛡️',this)">+ Add to Cart</button>
+                    <button class="card-detail-btn" onclick="event.stopPropagation(); openComboDetails('immunity')">View details</button>
+                    <button class="add-combo-btn" onclick="event.stopPropagation(); addToCart('Immunity Pack',999,'🛡️',this)">+ Add to Cart</button>
                 </div>
-                <div class="combo-card">
+                <div class="combo-card" onclick="openComboDetails('skin-hair')">
                     <div class="emoji">✨</div>
                     <h4>Skin & Hair Pack</h4>
                     <p class="items">Bhringraj Oil + Soap + Amla Powder</p>
                     <span class="combo-price">₹1,499</span><span class="old-price">₹1,697</span>
-                    <button class="add-combo-btn" onclick="addToCart('Skin & Hair Pack',1499,'✨',this)">+ Add to Cart</button>
+                    <button class="card-detail-btn" onclick="event.stopPropagation(); openComboDetails('skin-hair')">View details</button>
+                    <button class="add-combo-btn" onclick="event.stopPropagation(); addToCart('Skin & Hair Pack',1499,'✨',this)">+ Add to Cart</button>
                 </div>
-                <div class="combo-card">
+                <div class="combo-card" onclick="openComboDetails('stress-relief')">
                     <div class="emoji">🧘</div>
                     <h4>Stress Relief Pack</h4>
                     <p class="items">Ashwagandha + Brahmi + Herbal Tea</p>
                     <span class="combo-price">₹1,299</span><span class="old-price">₹1,447</span>
-                    <button class="add-combo-btn" onclick="addToCart('Stress Relief Pack',1299,'🧘',this)">+ Add to Cart</button>
+                    <button class="card-detail-btn" onclick="event.stopPropagation(); openComboDetails('stress-relief')">View details</button>
+                    <button class="add-combo-btn" onclick="event.stopPropagation(); addToCart('Stress Relief Pack',1299,'🧘',this)">+ Add to Cart</button>
                 </div>
             </div>
         </div>
@@ -540,6 +641,7 @@
         </div>
         <div class="dash-section">
             <h3>📋 Recent Orders</h3>
+            <div class="dash-table-wrap">
             <table class="dash-table">
                 <thead><tr><th>Order</th><th>Customer</th><th>Items</th><th>Amount</th><th>Payment</th><th>Status</th></tr></thead>
                 <tbody>
@@ -550,9 +652,11 @@
                     <tr><td>#AYU-005</td><td>Sneha R.</td><td>Soap, Powder</td><td>₹498</td><td>COD</td><td><span class="order-status st-cancelled">Cancelled</span></td></tr>
                 </tbody>
             </table>
+            </div>
         </div>
         <div class="dash-section">
             <h3>🏆 Top Selling Products</h3>
+            <div class="dash-table-wrap">
             <table class="dash-table">
                 <thead><tr><th>Product</th><th>Sold</th><th>Revenue</th><th>Rating</th></tr></thead>
                 <tbody>
@@ -562,6 +666,7 @@
                     <tr><td>🍵 Tulsi Ginger Tea</td><td>24</td><td>₹5,976</td><td>⭐ 4.5</td></tr>
                 </tbody>
             </table>
+            </div>
         </div>
     </div>
 </div>
@@ -572,25 +677,98 @@
 </div>
 
 <!-- CART DRAWER -->
-<!-- CART DRAWER mein yeh ADD karo (cart-footer ke andar, wa-order-btn ke pehle) -->
-
-<!-- CUSTOMER DETAILS FORM -->
-<div id="customerForm" style="display:none; margin-bottom:12px;">
-    <div class="pm-label">📋 Apni Details Bharo:</div>
-    <input type="text" id="custName" placeholder="Naam *" style="width:100%;padding:10px;border:1.5px solid #eee;border-radius:8px;font-size:0.85rem;margin-bottom:8px;outline:none;">
-    <input type="tel" id="custPhone" placeholder="Phone Number *" style="width:100%;padding:10px;border:1.5px solid #eee;border-radius:8px;font-size:0.85rem;margin-bottom:8px;outline:none;">
-    <input type="email" id="custEmail" placeholder="Email (optional)" style="width:100%;padding:10px;border:1.5px solid #eee;border-radius:8px;font-size:0.85rem;margin-bottom:8px;outline:none;">
-    <textarea id="custAddress" placeholder="Full Address *" rows="2" style="width:100%;padding:10px;border:1.5px solid #eee;border-radius:8px;font-size:0.85rem;margin-bottom:8px;outline:none;resize:none;font-family:inherit;"></textarea>
-    <input type="text" id="custCity" placeholder="City *" style="width:100%;padding:10px;border:1.5px solid #eee;border-radius:8px;font-size:0.85rem;outline:none;">
-</div>   
+<div class="detail-overlay" id="detailOverlay" onclick="closeDetails()">
+    <div class="detail-modal" role="dialog" aria-modal="true" aria-labelledby="detailTitle" onclick="event.stopPropagation()">
+        <button class="detail-close" id="detailClose" onclick="closeDetails()" aria-label="Close details">×</button>
+        <div class="detail-visual" id="detailVisual"></div>
+        <div class="detail-content" id="detailBody"></div>
+    </div>
+</div>
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+<aside class="cart-drawer" id="cartDrawer" aria-label="Shopping cart">
+    <div class="cart-header">
+        <h3>🛒 Your Cart</h3>
+        <button class="cart-close" onclick="toggleCart()" aria-label="Close cart">×</button>
+    </div>
+    <div class="cart-items" id="cartItems">
+        <div class="cart-empty"><div class="emoji">🛒</div><p>Cart khaali hai</p></div>
+    </div>
+    <div class="cart-footer" id="cartFooter" style="display:none;">
+        <div class="coupon-form">
+            <div class="pm-label">Promo code</div>
+            <div class="coupon-input-row">
+                <input id="couponInput" type="text" placeholder="Enter coupon code" autocomplete="off">
+                <button type="button" onclick="applyCoupon()">Apply</button>
+                <button type="button" id="removeCouponButton" onclick="removeCoupon()" style="display:none;">Remove</button>
+            </div>
+            <div class="coupon-message" id="couponMessage" aria-live="polite"></div>
+        </div>
+        <div class="cart-subtotal"><span>Subtotal</span><span id="cartSubtotal">₹0</span></div>
+        <div class="cart-discount" id="couponSavingsRow" style="display:none;"><span>Coupon discount</span><span id="couponSavings">−₹0</span></div>
+        <div class="cart-total"><span>Total</span><span id="cartTotal">₹0</span></div>
+        <div id="customerForm" style="margin-bottom:12px;">
+            <div class="pm-label">📋 Delivery details</div>
+            <input type="text" id="custName" placeholder="Naam *" oninput="updateCheckoutReview()" style="width:100%;padding:10px;border:1.5px solid #eee;border-radius:8px;font-size:0.85rem;margin-bottom:8px;outline:none;">
+            <input type="tel" id="custPhone" placeholder="Phone Number *" oninput="updateCheckoutReview()" style="width:100%;padding:10px;border:1.5px solid #eee;border-radius:8px;font-size:0.85rem;margin-bottom:8px;outline:none;">
+            <input type="email" id="custEmail" placeholder="Email (optional)" oninput="updateCheckoutReview()" style="width:100%;padding:10px;border:1.5px solid #eee;border-radius:8px;font-size:0.85rem;margin-bottom:8px;outline:none;">
+            <textarea id="custAddress" placeholder="Full Address *" rows="2" oninput="updateCheckoutReview()" style="width:100%;padding:10px;border:1.5px solid #eee;border-radius:8px;font-size:0.85rem;margin-bottom:8px;outline:none;resize:none;font-family:inherit;"></textarea>
+            <input type="text" id="custCity" placeholder="City *" oninput="updateCheckoutReview()" style="width:100%;padding:10px;border:1.5px solid #eee;border-radius:8px;font-size:0.85rem;outline:none;">
+        </div>
+        <section class="checkout-review" aria-live="polite" aria-label="Order review">
+            <div class="checkout-review-top"><strong>Review order</strong><span class="checkout-review-count" id="checkoutReviewCount">0 items</span></div>
+            <div class="checkout-review-items" id="checkoutReviewItems"></div>
+            <div class="checkout-review-delivery">
+                <div><span>Deliver to</span><strong id="reviewName">Enter name above</strong></div>
+                <p id="reviewAddress">Address and city will appear here.</p>
+                <p id="reviewPhone">Phone: not entered</p>
+            </div>
+        </section>
+        <div class="pm-label">Payment method:</div>
+        <div class="pm-options" role="radiogroup" aria-label="Select payment method">
+            <button type="button" class="pm-option active" role="radio" aria-checked="true" data-method="cod" onclick="selectPM(this)">💵 Cash on Delivery</button>
+            <button type="button" class="pm-option" role="radio" aria-checked="false" data-method="upi" onclick="selectPM(this)">📱 UPI</button>
+        </div>
+        <div class="payment-feedback" id="paymentFeedback" aria-live="polite">Pay cash to the delivery partner when your order arrives.</div>
+        <section class="upi-payment-panel" id="upiPaymentPanel" style="display:none;" aria-label="UPI payment details">
+            <div class="upi-payment-title">Scan with any UPI app</div>
+            <div class="upi-payment-layout">
+                <div class="upi-qr" id="upiQRCode" role="img" aria-label="UPI payment QR code"></div>
+                <div class="upi-details">
+                    <div class="upi-amount">Pay exactly <span id="upiAmount">₹0</span></div>
+                    <span class="upi-id-label">UPI ID</span>
+                    <div class="upi-id-row"><strong id="upiIdText">6261609312@ybl</strong></div>
+                    <button class="upi-copy-btn" type="button" onclick="copyUPIId()">Copy UPI ID</button>
+                    <a class="upi-open-app" id="upiPayLink" href="upi://pay">Open UPI app</a>
+                </div>
+            </div>
+            <p class="upi-note">Check the payee and amount in your UPI app before approving. Payment status is not verified by this website.</p>
+        </section>
+        <button class="wa-order-btn" id="checkoutButton" onclick="orderViaWhatsApp()">Place COD Order on WhatsApp</button>
+        <div class="cod-note">Order confirmation will be sent over WhatsApp.</div>
+    </div>
+</aside>
 
 <!-- TOAST -->
 <div class="toast" id="toast">✅ Added to Cart!</div>
 
 <!-- ===== JAVASCRIPT ===== -->
+<script src="node_modules/qrcodejs/qrcode.min.js"></script>
 <script>
 const WA = '9174757014';
-let cart = [];
+const UPI_ID = '6261609312@ybl';
+function readLocalArray(key) {
+    try {
+        const value = JSON.parse(localStorage.getItem(key) || '[]');
+        return Array.isArray(value) ? value : [];
+    } catch (error) {
+        return [];
+    }
+}
+
+let cart = readLocalArray('ayurveda_cart');
+let wishlist = readLocalArray('ayurveda_wishlist');
+let appliedCoupon = localStorage.getItem('ayurveda_coupon') || '';
+let wishlistOnly = false;
 
 // PRODUCTS DATA
 const products = [
@@ -603,6 +781,14 @@ const products = [
     { id: 7, name: 'Brahmi Powder 100g', category: 'Powder', price: 149, salePrice: null, emoji: '🌾', rating: 4.4, reviews: 65, desc: 'Memory booster. 1 tsp daily.', oos: false, date: '2026-09-24' },
     { id: 8, name: 'Shatavari Tablets', category: 'Tablets', price: 249, salePrice: null, emoji: '💊', rating: 4.5, reviews: 112, desc: 'Women\'s health. Hormone balance.', oos: false, date: '2026-09-21' }
 ];
+
+const comboPacks = [
+    { id: 'immunity', name: 'Immunity Pack', price: 999, originalPrice: 1047, emoji: '🛡️', description: 'A three-product bundle with Chawanprash, Tulsi Tea, and Ashwagandha.', items: ['Amla Chawanprash 500g', 'Tulsi Ginger Tea (20s)', 'Ashwagandha 60 Tablets'] },
+    { id: 'skin-hair', name: 'Skin & Hair Pack', price: 1499, originalPrice: 1697, emoji: '✨', description: 'A curated bundle with Bhringraj Hair Oil, Neem Herbal Soap, and Amla Powder.', items: ['Bhringraj Hair Oil 200ml', 'Neem Herbal Soap', 'Amla Powder 200g'] },
+    { id: 'stress-relief', name: 'Stress Relief Pack', price: 1299, originalPrice: 1447, emoji: '🧘', description: 'A three-product bundle with Ashwagandha, Brahmi Powder, and Tulsi Ginger Tea.', items: ['Ashwagandha 60 Tablets', 'Brahmi Powder 100g', 'Tulsi Ginger Tea (20s)'] }
+];
+let activeDetail = null;
+let selectedDetailQuantity = 1;
 
 // ORDERS DATA
 const orders = [
@@ -617,29 +803,155 @@ const orders = [
 // RENDER PRODUCTS
 function renderProducts(list) {
     const grid = document.getElementById('productsGrid');
-    grid.innerHTML = list.map(p => `
-        <div class="product-card">
+    const visibleProducts = wishlistOnly ? list.filter(product => wishlist.includes(product.id)) : list;
+    grid.innerHTML = visibleProducts.map(p => `
+        <div class="product-card" onclick="openProductDetails(${p.id})">
             <div class="img">${p.emoji}
                 ${p.salePrice ? `<span class="off-badge">${Math.round((1-p.salePrice/p.price)*100)}% OFF</span>` : ''}
                 ${p.oos ? '<span class="oos-badge">Out of Stock</span>' : ''}
             </div>
             <div class="info">
-                <span class="tag">${p.category}</span>
+                <div class="product-meta">
+                    <span class="tag">${p.category}</span>
+                    <button class="wishlist-toggle" type="button" aria-label="${wishlist.includes(p.id) ? 'Remove from' : 'Add to'} wishlist" aria-pressed="${wishlist.includes(p.id)}" onclick="event.stopPropagation(); toggleWishlist(${p.id})">${wishlist.includes(p.id) ? '♥' : '♡'}</button>
+                </div>
                 <h4>${p.name}</h4>
                 <div class="stars">${'★'.repeat(Math.floor(p.rating))}${'☆'.repeat(5-Math.floor(p.rating))} <span class="cnt">(${p.reviews})</span></div>
                 <p class="desc">${p.desc}</p>
                 <div class="price-row">
                     ${p.salePrice ? `<span class="sale-price">₹${p.salePrice}</span><span class="old-price">₹${p.price}</span>` : `<span class="price">₹${p.price}</span>`}
                 </div>
+                <button class="card-detail-btn" onclick="event.stopPropagation(); openProductDetails(${p.id})">View details</button>
                 <div class="bottom">
                     <span style="font-size:0.7rem;color:#999;">${p.oos ? '🚫 Unavailable' : '✅ In Stock'}</span>
-                    <button class="add-btn" ${p.oos ? 'disabled' : ''} onclick="addToCart('${p.name}',${p.salePrice||p.price},'${p.emoji}',this)">+</button>
+                    <button class="add-btn" ${p.oos ? 'disabled' : ''} onclick="event.stopPropagation(); addToCart('${p.name}',${p.salePrice||p.price},'${p.emoji}',this)">+</button>
                 </div>
             </div>
         </div>
     `).join('');
 }
 renderProducts(products);
+updateWishlistUI();
+updateCartUI();
+
+function toggleWishlist(productId) {
+    if (wishlist.includes(productId)) wishlist = wishlist.filter(id => id !== productId);
+    else wishlist.push(productId);
+    localStorage.setItem('ayurveda_wishlist', JSON.stringify(wishlist));
+    updateWishlistUI();
+    renderProducts(products);
+}
+
+function toggleWishlistView() {
+    wishlistOnly = !wishlistOnly;
+    updateWishlistUI();
+    renderProducts(products);
+    scrollToSection('products');
+}
+
+function updateWishlistUI() {
+    document.getElementById('wishlistCount').textContent = wishlist.length;
+    document.getElementById('wishlistToggle').classList.toggle('active', wishlistOnly);
+    document.getElementById('wishlistToggle').setAttribute('aria-pressed', wishlistOnly);
+    document.getElementById('sortTitle').textContent = wishlistOnly ? '♥ My Wishlist' : '🛒 All Products';
+}
+
+function openProductDetails(productId) {
+    const product = products.find(item => item.id === productId);
+    if (!product) return;
+    showDetails({
+        kind: 'product',
+        name: product.name,
+        emoji: product.emoji,
+        category: product.category,
+        description: product.desc,
+        price: product.salePrice || product.price,
+        originalPrice: product.price,
+        rating: product.rating,
+        reviews: product.reviews,
+        available: !product.oos,
+        points: [`Category: ${product.category}`, product.desc, 'Follow the directions printed on the product pack.']
+    });
+}
+
+function openComboDetails(comboId) {
+    const combo = comboPacks.find(item => item.id === comboId);
+    if (!combo) return;
+    showDetails({
+        kind: 'combo',
+        name: combo.name,
+        emoji: combo.emoji,
+        category: 'Curated combo pack',
+        description: combo.description,
+        price: combo.price,
+        originalPrice: combo.originalPrice,
+        available: true,
+        points: combo.items
+    });
+}
+
+function showDetails(item) {
+    activeDetail = item;
+    selectedDetailQuantity = 1;
+    const savings = item.originalPrice - item.price;
+    const discount = savings > 0 ? Math.round((savings / item.originalPrice) * 100) : 0;
+    const rating = item.rating ? `<div class="detail-rating">★ ${item.rating.toFixed(1)} <span style="color:#777">(${item.reviews} ratings)</span></div>` : '';
+    const availability = item.available ? 'In stock' : 'Currently unavailable';
+    const pointsTitle = item.kind === 'combo' ? 'Included in this pack' : 'Product highlights';
+    document.getElementById('detailVisual').textContent = item.emoji;
+    document.getElementById('detailBody').innerHTML = `
+        <div class="detail-kicker">${item.category}</div>
+        <h2 id="detailTitle">${item.name}</h2>
+        ${rating}
+        <p class="detail-description">${item.description}</p>
+        <div class="detail-price-row">
+            <span class="detail-price">₹${item.price.toLocaleString('en-IN')}</span>
+            ${savings > 0 ? `<span class="detail-mrp">₹${item.originalPrice.toLocaleString('en-IN')}</span><span class="detail-discount">${discount}% off</span>` : ''}
+        </div>
+        ${savings > 0 ? `<div class="detail-savings">You save ₹${savings.toLocaleString('en-IN')}</div>` : ''}
+        <span class="detail-stock ${item.available ? '' : 'out'}">${availability}</span>
+        <h3>${pointsTitle}</h3>
+        <ul class="detail-list">${item.points.map(point => `<li>${point}</li>`).join('')}</ul>
+        <div class="detail-actions">
+            <div class="detail-quantity" aria-label="Choose quantity">
+                <button onclick="changeDetailQuantity(-1)" aria-label="Decrease quantity">−</button>
+                <span id="detailQuantity">1</span>
+                <button onclick="changeDetailQuantity(1)" aria-label="Increase quantity">+</button>
+            </div>
+            <button class="detail-action-btn" onclick="addDetailToCart(false)" ${item.available ? '' : 'disabled'}>Add to Cart</button>
+            <button class="detail-action-btn primary" onclick="addDetailToCart(true)" ${item.available ? '' : 'disabled'}>Buy Now</button>
+        </div>`;
+    document.getElementById('detailOverlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('detailClose').focus();
+}
+
+function changeDetailQuantity(change) {
+    selectedDetailQuantity = Math.max(1, Math.min(99, selectedDetailQuantity + change));
+    document.getElementById('detailQuantity').textContent = selectedDetailQuantity;
+}
+
+function closeDetails() {
+    document.getElementById('detailOverlay').classList.remove('active');
+    document.body.style.overflow = '';
+    activeDetail = null;
+}
+
+function addDetailToCart(openCart) {
+    if (!activeDetail || !activeDetail.available) return;
+    const item = activeDetail;
+    const quantity = selectedDetailQuantity;
+    closeDetails();
+    addToCart(item.name, item.price, item.emoji, null, quantity);
+    if (openCart) {
+        document.getElementById('cartDrawer').classList.add('active');
+        document.getElementById('cartOverlay').classList.add('active');
+    }
+}
+
+document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') closeDetails();
+});
 
 // SORT
 function sortProducts(type, btn) {
@@ -655,11 +967,11 @@ function sortProducts(type, btn) {
 }
 
 // SEARCH
-function doSearch(q) {
+function doSearch(q, scrollToResults = false) {
     q = q.toLowerCase();
     const filtered = products.filter(p => p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q));
     renderProducts(filtered);
-    if (q) scrollToSection('products');
+    if (q && scrollToResults) scrollToSection('products');
 }
 
 // CATEGORY FILTER
@@ -678,7 +990,7 @@ function voiceSearch() {
         rec.onresult = function(e) {
             const text = e.results[0][0].transcript;
             document.getElementById('searchInput').value = text;
-            doSearch(text);
+            doSearch(text, true);
         };
         rec.start();
     } else {
@@ -712,10 +1024,10 @@ function switchPage(page) {
 }
 
 // CART
-function addToCart(name, price, emoji, btn) {
+function addToCart(name, price, emoji, btn, quantity = 1) {
     const existing = cart.find(i => i.name === name);
-    if (existing) { existing.qty++; }
-    else { cart.push({ name, price, emoji, qty: 1 }); }
+    if (existing) { existing.qty += quantity; }
+    else { cart.push({ name, price, emoji, qty: quantity }); }
     updateCartUI();
     showToast();
     if (btn) {
@@ -740,14 +1052,92 @@ function removeItem(name) {
     updateCartUI();
 }
 
+function isComboCartItem(item) {
+    return item.name.endsWith('Pack');
+}
+
+function calculateCouponDiscount(subtotal) {
+    if (appliedCoupon === 'AYURVEDA10') return Math.round(subtotal * 0.1);
+    if (appliedCoupon === 'FIRST50') return Math.min(50, subtotal);
+    if (appliedCoupon === 'COMBO20') {
+        const comboSubtotal = cart.filter(isComboCartItem).reduce((sum, item) => sum + item.price * item.qty, 0);
+        return Math.round(comboSubtotal * 0.2);
+    }
+    return 0;
+}
+
+function setCouponMessage(message, isError = false) {
+    const messageElement = document.getElementById('couponMessage');
+    messageElement.textContent = message;
+    messageElement.classList.toggle('error', isError);
+}
+
+function applyCoupon() {
+    const code = document.getElementById('couponInput').value.trim().toUpperCase();
+    if (!cart.length) {
+        setCouponMessage('Add products to your cart before applying a code.', true);
+        return;
+    }
+    if (!['AYURVEDA10', 'FIRST50', 'COMBO20'].includes(code)) {
+        setCouponMessage('Invalid code. Try AYURVEDA10, FIRST50, or COMBO20.', true);
+        return;
+    }
+    if (code === 'COMBO20' && !cart.some(isComboCartItem)) {
+        setCouponMessage('COMBO20 applies to combo packs only.', true);
+        return;
+    }
+    appliedCoupon = code;
+    localStorage.setItem('ayurveda_coupon', appliedCoupon);
+    updateCartUI();
+    setCouponMessage(`${code} applied successfully.`, false);
+}
+
+function removeCoupon() {
+    appliedCoupon = '';
+    localStorage.removeItem('ayurveda_coupon');
+    document.getElementById('couponInput').value = '';
+    updateCartUI();
+    setCouponMessage('Coupon removed.', false);
+}
+
+function useCoupon(code) {
+    if (!document.getElementById('cartDrawer').classList.contains('active')) toggleCart();
+    document.getElementById('couponInput').value = code;
+    if (!cart.length) {
+        setCouponMessage('Add products to your cart, then apply this code.', true);
+        showToast('Add a product to your cart to use this code.');
+        return;
+    }
+    applyCoupon();
+}
+
 function updateCartUI() {
+    localStorage.setItem('ayurveda_cart', JSON.stringify(cart));
+    if (!cart.length) {
+        appliedCoupon = '';
+        localStorage.removeItem('ayurveda_coupon');
+    } else if (appliedCoupon === 'COMBO20' && !cart.some(isComboCartItem)) {
+        appliedCoupon = '';
+        localStorage.removeItem('ayurveda_coupon');
+        document.getElementById('couponInput').value = '';
+        setCouponMessage('COMBO20 removed because no combo pack remains in your cart.', true);
+    }
     const count = cart.reduce((s, i) => s + i.qty, 0);
-    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    const discount = calculateCouponDiscount(subtotal);
+    const total = subtotal - discount;
     document.getElementById('cartCount').textContent = count;
+    document.getElementById('cartSubtotal').textContent = '₹' + subtotal.toLocaleString('en-IN');
+    document.getElementById('couponSavings').textContent = '−₹' + discount.toLocaleString('en-IN');
+    document.getElementById('couponSavingsRow').style.display = discount ? 'flex' : 'none';
     document.getElementById('cartTotal').textContent = '₹' + total.toLocaleString('en-IN');
+    document.getElementById('removeCouponButton').style.display = appliedCoupon ? 'block' : 'none';
+    if (appliedCoupon) document.getElementById('couponInput').value = appliedCoupon;
     const itemsDiv = document.getElementById('cartItems');
     const footerDiv = document.getElementById('cartFooter');
     if (cart.length === 0) {
+        document.getElementById('couponInput').value = '';
+        setCouponMessage('', false);
         itemsDiv.innerHTML = '<div class="cart-empty"><div class="emoji">🛒</div><p>Cart khaali hai</p></div>';
         footerDiv.style.display = 'none';
     } else {
@@ -768,6 +1158,26 @@ function updateCartUI() {
             </div>
         `).join('');
     }
+    updateCheckoutReview();
+}
+
+function updateCheckoutReview() {
+    const itemsContainer = document.getElementById('checkoutReviewItems');
+    const itemCount = cart.reduce((sum, item) => sum + item.qty, 0);
+    document.getElementById('checkoutReviewCount').textContent = `${itemCount} item${itemCount === 1 ? '' : 's'}`;
+    itemsContainer.innerHTML = cart.length
+        ? cart.map(item => `<div class="checkout-review-item"><span>${item.name} × ${item.qty}</span><strong>₹${(item.price * item.qty).toLocaleString('en-IN')}</strong></div>`).join('')
+        : '<div class="checkout-review-item">Your cart is empty</div>';
+
+    const name = document.getElementById('custName').value.trim();
+    const phone = document.getElementById('custPhone').value.trim();
+    const address = document.getElementById('custAddress').value.trim();
+    const city = document.getElementById('custCity').value.trim();
+    document.getElementById('reviewName').textContent = name || 'Enter name above';
+    document.getElementById('reviewAddress').textContent = [address, city].filter(Boolean).join(', ') || 'Address and city will appear here.';
+    document.getElementById('reviewPhone').textContent = `Phone: ${phone || 'not entered'}`;
+    const paymentOption = document.querySelector('.pm-option.active');
+    if (paymentOption?.dataset.method === 'upi') updateUPIPayment();
 }
 
 function toggleCart() {
@@ -776,8 +1186,83 @@ function toggleCart() {
 }
 
 function selectPM(el) {
-    document.querySelectorAll('.pm-option').forEach(o => o.classList.remove('active'));
+    document.querySelectorAll('.pm-option').forEach(option => {
+        option.classList.remove('active');
+        option.setAttribute('aria-checked', 'false');
+    });
     el.classList.add('active');
+    el.setAttribute('aria-checked', 'true');
+    const isUPI = el.dataset.method === 'upi';
+    document.getElementById('upiPaymentPanel').style.display = isUPI ? 'block' : 'none';
+    document.getElementById('paymentFeedback').textContent = isUPI
+        ? 'Scan the QR or copy the UPI ID. Verify the payee and exact amount in your app before paying.'
+        : 'Pay cash to the delivery partner when your order arrives.';
+    document.getElementById('checkoutButton').textContent = isUPI
+        ? 'Continue with UPI on WhatsApp'
+        : 'Place COD Order on WhatsApp';
+    if (isUPI) updateUPIPayment();
+}
+
+function updateUPIPayment() {
+    const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+    const total = subtotal - calculateCouponDiscount(subtotal);
+    const amount = total.toFixed(2);
+    const paymentParams = new URLSearchParams({
+        pa: UPI_ID,
+        pn: 'Dr. Ayurveda',
+        am: amount,
+        cu: 'INR',
+        tn: 'Dr. Ayurveda order payment'
+    });
+    const paymentUri = `upi://pay?${paymentParams.toString()}`;
+    const qrContainer = document.getElementById('upiQRCode');
+    const upiPayLink = document.getElementById('upiPayLink');
+    document.getElementById('upiAmount').textContent = '₹' + total.toLocaleString('en-IN');
+    document.getElementById('upiIdText').textContent = UPI_ID;
+    upiPayLink.href = paymentUri;
+    qrContainer.replaceChildren();
+    const hasDeliveryDetails = ['custName', 'custPhone', 'custAddress', 'custCity']
+        .every(id => document.getElementById(id).value.trim());
+    if (!hasDeliveryDetails) {
+        upiPayLink.style.display = 'none';
+        qrContainer.textContent = 'Enter your delivery details above to generate the payment QR.';
+        return;
+    }
+    upiPayLink.style.display = 'inline-flex';
+    if (typeof QRCode === 'undefined') {
+        qrContainer.textContent = 'QR unavailable. Copy the UPI ID.';
+        return;
+    }
+    try {
+        new QRCode(qrContainer, {
+            text: paymentUri,
+            width: 136,
+            height: 136,
+            colorDark: '#1a2e15',
+            colorLight: '#ffffff',
+            correctLevel: QRCode.CorrectLevel.M
+        });
+    } catch (error) {
+        qrContainer.textContent = 'QR unavailable. Copy the UPI ID.';
+    }
+}
+
+async function copyUPIId() {
+    try {
+        if (!navigator.clipboard || !window.isSecureContext) throw new Error('Clipboard unavailable');
+        await navigator.clipboard.writeText(UPI_ID);
+        showToast('✅ UPI ID copied');
+    } catch (error) {
+        const fallbackInput = document.createElement('textarea');
+        fallbackInput.value = UPI_ID;
+        fallbackInput.style.position = 'fixed';
+        fallbackInput.style.opacity = '0';
+        document.body.appendChild(fallbackInput);
+        fallbackInput.select();
+        const copied = document.execCommand('copy');
+        fallbackInput.remove();
+        showToast(copied ? '✅ UPI ID copied' : `UPI ID: ${UPI_ID}`);
+    }
 }
 
 function orderViaWhatsApp() {
@@ -799,7 +1284,9 @@ function orderViaWhatsApp() {
         return;
     }
 
-    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    const discount = calculateCouponDiscount(subtotal);
+    const total = subtotal - discount;
     const pm = document.querySelector('.pm-option.active');
 
     // Build WhatsApp message
@@ -817,8 +1304,11 @@ function orderViaWhatsApp() {
         msg += `${i+1}. ${item.name} × ${item.qty} = ₹${(item.price*item.qty).toLocaleString('en-IN')}\n`;
     });
     msg += '\n━━━━━━━━━━━━━━\n';
+    msg += `Subtotal: ₹${subtotal.toLocaleString('en-IN')}\n`;
+    if (discount) msg += `Coupon (${appliedCoupon}): −₹${discount.toLocaleString('en-IN')}\n`;
     msg += `💰 *TOTAL: ₹${total.toLocaleString('en-IN')}*\n`;
-    msg += `💳 Payment: ${pm ? pm.textContent : 'UPI'}\n`;
+    const paymentMethod = pm?.dataset.method === 'upi' ? `UPI (${UPI_ID}, payment pending confirmation)` : 'Cash on Delivery';
+    msg += `💳 Payment: ${paymentMethod}\n`;
     msg += `📅 Date: ${new Date().toLocaleDateString('en-IN')}\n`;
 
     // Save to localStorage (admin.html mein dikhega)
@@ -829,7 +1319,8 @@ function orderViaWhatsApp() {
         name, phone, email, address, city,
         items: cart.map(i => `${i.name} × ${i.qty}`),
         total,
-        payment: pm ? pm.textContent : 'UPI',
+        coupon: appliedCoupon,
+        payment: paymentMethod,
         status: 'ordered'
     };
 
@@ -843,7 +1334,6 @@ function orderViaWhatsApp() {
     // Clear cart
     cart = [];
     updateCartUI();
-    form.style.display = 'none';
     document.getElementById('custName').value = '';
     document.getElementById('custPhone').value = '';
     document.getElementById('custEmail').value = '';
@@ -877,7 +1367,7 @@ function renderOrders(filter) {
             <div class="order-items">${o.items.map(i => `<span class="oi">${i}</span>`).join('')}</div>
             <div class="order-bottom">
                 <span class="order-total">₹${o.total.toLocaleString('en-IN')}</span>
-                <span class="order-date">Payment: UPI</span>
+                <span class="order-date">Payment: ${o.payment}</span>
             </div>
         </div>
     `).join('');
